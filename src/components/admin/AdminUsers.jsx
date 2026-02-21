@@ -3,6 +3,7 @@ import { Checkbox, Pagination, Table } from "@mantine/core";
 import DashboardSection from "../ui/DashboardSection";
 import AppLoader from "../loader/AppLoader";
 import useUsers from "../../hooks/admin/useUsers";
+import { normalizePaginatedData } from "../../utils/pagination";
 
 const PAGE_SIZE = 20;
 
@@ -24,7 +25,7 @@ export default function AdminUsers() {
     );
   }
 
-  const { content: users, totalPages } = data;
+  const { content: users, totalPages } = normalizePaginatedData(data, PAGE_SIZE);
 
   return (
     <DashboardSection className="gap-8">
@@ -82,6 +83,8 @@ export default function AdminUsers() {
             total={totalPages}
             value={page + 1}
             onChange={(p) => setPage(p - 1)}
+            withControls
+            withEdges
           />
         </div>
       )}

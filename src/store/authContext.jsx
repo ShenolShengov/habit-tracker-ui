@@ -36,10 +36,16 @@ export function AuthProvider({ children }) {
     return res;
   };
 
-  const refresh = useCallback(
-    async () => withCredentials(endpoints.auth.refresh, {}),
-    []
-  );
+  const refresh = useCallback(async () => {
+    const res = await api.post(
+      endpoints.auth.refresh,
+      {},
+      { withCredentials: true, skipAuthRefresh: true }
+    );
+    const token = res.data.accessToken;
+    setAccessToken(token || null);
+    return res;
+  }, []);
 
   const login = (email, password) =>
     withCredentials(endpoints.auth.login, { email, password });
@@ -61,7 +67,7 @@ export function AuthProvider({ children }) {
 
   useLayoutEffect(() => {
     const authInterceptor = api.interceptors.request.use((config) => {
-      if (!config.retryRefresh && accessToken) {
+      if (!config.retryRefresh && !config.skipAuthRefresh && accessToken) {
         config.headers.Authorization = "Bearer " + accessToken;
       }
       return config;
@@ -75,10 +81,16 @@ export function AuthProvider({ children }) {
       async (err) => {
         const originalRequest = err.config;
 
-        if (err.response?.status === 401 && !originalRequest.retryRefresh) {
+        if (
+          err.response?.status === 401 &&
+          originalRequest &&
+          !originalRequest.retryRefresh &&
+          !originalRequest.skipAuthRefresh
+        ) {
           originalRequest.retryRefresh = true;
           try {
             const response = await refresh();
+            originalRequest.headers = originalRequest.headers || {};
             originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
             return api(originalRequest);
           } catch(e) {

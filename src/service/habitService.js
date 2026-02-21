@@ -3,8 +3,11 @@ import api from "../api/api";
 import endpoints from "../api/endpoints";
 
 const habitService = {
-  async getAll({ signal }) {
-    const res = await api.get(endpoints.habits.base, { signal });
+  async getAll({ signal, page = 0, size = 20 }) {
+    const res = await api.get(endpoints.habits.base, {
+      signal,
+      params: { page, size },
+    });
     return res.data;
   },
   async getWeeklyProgresses({ signal }) {

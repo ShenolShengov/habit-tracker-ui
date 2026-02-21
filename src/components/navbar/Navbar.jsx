@@ -1,8 +1,13 @@
-import { IconGauge, IconLogout, IconPlus } from "@tabler/icons-react";
+import {
+  IconGauge,
+  IconLogout,
+  IconPlus,
+  IconUser,
+  IconShieldCheck,
+} from "@tabler/icons-react";
 import { Center, Stack, Tooltip } from "@mantine/core";
 import logoMini from "../../assets/logo-mini.png";
 import { NavLink, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../../store/authContext";
 
 function NavbarLink({ Icon, label, path, ...props }) {
@@ -28,10 +33,11 @@ function NavbarLink({ Icon, label, path, ...props }) {
 const links = [
   { Icon: IconGauge, label: "Dashboard", path: "/dashboard" },
   { Icon: IconPlus, label: "Add habit", path: "/habits/create" },
+  { Icon: IconUser, label: "Profile", path: "/profile" },
 ];
 
 export default function Navbar() {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -55,6 +61,13 @@ export default function Navbar() {
           {links.map((link) => {
             return <NavbarLink {...link} key={link.label} />;
           })}
+          {user?.isAdmin && (
+            <NavbarLink
+              Icon={IconShieldCheck}
+              label="Admin"
+              path="/admin"
+            />
+          )}
         </Stack>
       </div>
 

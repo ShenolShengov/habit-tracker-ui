@@ -18,7 +18,7 @@ function deriverUser(accessToken) {
   return {
     id: payload.sub,
     email: payload.email,
-    isAdmin: payload.isAdmin,
+    isAdmin: payload.isAdmin === "true",
     timeZone: payload.timeZone,
   };
 }
@@ -119,6 +119,7 @@ export function AuthProvider({ children }) {
         login,
         register,
         logout,
+        refresh,
         isAuthLoading,
       }}
     >

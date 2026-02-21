@@ -5,11 +5,14 @@ import AuthLayout from "./layouts/AuthLayout";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import AuthGuard from "./guards/AuthGuard";
+import AdminGuard from "./guards/AdminGuard";
 import Home from "./components/home/Home";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Dashboard from "./components/dashboard/Dashboard";
 import AddHabit from "./components/habits/addHabit/AddHabit";
 import HabitDetails from "./components/habits/habitDetails/HabitDetails";
+import Profile from "./components/profile/Profile";
+import AdminUsers from "./components/admin/AdminUsers";
 import "./config/dayjsSetup";
 import NotFonud from "./components/notFound/NotFound";
 
@@ -32,6 +35,10 @@ export default function App() {
             <Route path="/habits/create" element={<AddHabit />} />
             <Route path="/habits/edit/:id" element={<AddHabit />} />
             <Route path="/habits/details/:id" element={<HabitDetails />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route element={<AdminGuard />}>
+              <Route path="/admin" element={<AdminUsers />} />
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<NotFonud />} />

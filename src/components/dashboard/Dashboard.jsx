@@ -6,7 +6,6 @@ import NoHabits from "../habits/noHabits/NoHabits";
 import AppLoader from "../loader/AppLoader";
 import useHabits from "../../hooks/habits/useHabits";
 import StatsOverview from "./StatsOverview";
-import { normalizePaginatedData } from "../../utils/pagination";
 
 const PAGE_SIZE = 20;
 
@@ -19,7 +18,8 @@ export default function Dashboard() {
   }
 
   const [habitsData, progress] = data;
-  const { content: habits, totalPages } = normalizePaginatedData(habitsData, PAGE_SIZE);
+  const habits = habitsData?.content ?? [];
+  const totalPages = habitsData?.page?.totalPages ?? habitsData?.totalPages ?? 1;
 
   if (habits && habits.length === 0 && page === 0) {
     return <NoHabits />;

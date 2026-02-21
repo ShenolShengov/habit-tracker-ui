@@ -11,11 +11,19 @@ const endpoints = {
   habits: {
     base: "/habits",
     byId: (id) => `/habits/${id}`,
-    stats: (id) => `/habits/${id}/stats`
+    stats: (id) => `/habits/${id}/stats`,
   },
   checkins: {
-    userBase: '/check-ins',
-    habitBase: (id) => `/habits/${id}/check-ins`
-  }
+    userBase: "/check-ins",
+    habitBase: (id) => `/habits/${id}/check-ins`,
+  },
+  stats: {
+    overview: "/stats/overview",
+    weekly: "/stats/weekly",
+    bestStreak: "/stats/best-streak",
+  },
+  admin: {
+    users: "/users",
+  },
 };
 export default endpoints;

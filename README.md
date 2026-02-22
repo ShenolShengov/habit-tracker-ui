@@ -8,7 +8,7 @@ Track daily habits, monitor streaks, visualize progress with charts, and manage 
 
 **Frontend** — React 19, Vite, Mantine v8, Tailwind CSS v4, TanStack Query, Recharts, Zod
 
-**Backend** — Spring Boot (Dockerized), PostgreSQL, Redis, JWT Auth
+**Backend** — Spring Boot (Dockerized), PostgreSQL, Redis, JWT Auth — [backend repository](https://github.com/hyuseinleshov/habit-tracker-api)
 
 ## Quick Start (Docker only)
 

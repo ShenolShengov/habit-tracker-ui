@@ -21,28 +21,28 @@ function ActionButtons({ id }) {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
       <Link
         to={`/habits/edit/${id}`}
-        className="grow border py-2 rounded-md border-gray-200 flex items-center justify-evenly"
+        className="grow basis-0 min-w-[80px] border py-2 rounded-lg border-gray-200 flex items-center justify-center gap-1.5 no-underline text-inherit text-sm hover:bg-gray-50 transition-all duration-200"
       >
-        <IconEdit size={18} />
+        <IconEdit size={15} stroke={1.5} />
         <span>Edit</span>
       </Link>
       <button
         onClick={handleDelete}
         disabled={isDeleteLoading}
-        className="grow cursor-pointer bg-red-500 text-white py-2 rounded-md flex items-center justify-evenly"
+        className="grow basis-0 min-w-[80px] cursor-pointer bg-red-500 hover:bg-red-600 transition-all duration-200 text-white py-2 rounded-lg flex items-center justify-center gap-1.5 text-sm border-none"
       >
-        <IconTrash size={18} />
+        <IconTrash size={15} stroke={1.5} />
         <span className="font-medium">Delete</span>
       </button>
       <Link
         to={`/habits/details/${id}`}
-        className="grow border py-2 rounded-md border-gray-200 flex items-center justify-evenly"
+        className="grow basis-0 min-w-[80px] border py-2 rounded-lg border-gray-200 flex items-center justify-center gap-1.5 no-underline text-inherit text-sm hover:bg-gray-50 transition-all duration-200"
       >
-        <IconEye size={18} />
-        <span>View details</span>
+        <IconEye size={15} stroke={1.5} />
+        <span>Details</span>
       </Link>
     </div>
   );
@@ -55,26 +55,26 @@ function CheckInAction({ checkedInToday, id }) {
     try {
       await checkIn(id);
     } catch {
-      alert("Error occursed when try to check in. Plase try again later");
+      alert("Error occurred while checking in. Please try again later.");
     }
   };
 
   return (
-    <div className="mt-2 flex">
+    <div className="mt-1 flex">
       {checkedInToday ? (
         <button
           disabled
-          className="grow py-2 text-lg! bg-gray-100 rounded-lg flex items-center justify-center gap-2"
+          className="grow py-2.5 text-sm bg-gray-50 text-gray-400 rounded-lg flex items-center justify-center gap-2 border-none"
         >
-          <IconCircleDashedCheck />
+          <IconCircleDashedCheck size={18} />
           Checked in today
         </button>
       ) : (
         <button
           onClick={handleCheckIn}
-          className="grow py-2 text-lg cursor-pointer active:translate-y-0.5 active:scale-[0.98] transition bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2"
+          className="grow py-2.5 text-sm font-medium cursor-pointer active:scale-[0.98] transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 border-none"
         >
-          <IconCircleDashedPlus />
+          <IconCircleDashedPlus size={18} />
           Mark today as completed
         </button>
       )}
@@ -84,17 +84,14 @@ function CheckInAction({ checkedInToday, id }) {
 
 function WeeklyProgressBar({ percent }) {
   return (
-    <div className="flex items-center gap-2">
-      <div className="grow bg-gray-100 rounded-full h-3">
+    <div className="flex items-center gap-3">
+      <div className="grow bg-gray-100 rounded-full h-2">
         <div
-          className={`bg-blue-600 h-3 rounded-full`}
-          style={{
-            width: `${percent}%`,
-          }}
-        ></div>
+          className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+          style={{ width: `${percent}%` }}
+        />
       </div>
-      <p>{percent}%</p>
-      <p className="px-4 py-1 rounded-3xl bg-gray-100">Current Week</p>
+      <p className="text-sm font-semibold text-gray-700 tabular-nums">{percent}%</p>
     </div>
   );
 }
@@ -102,18 +99,20 @@ function WeeklyProgressBar({ percent }) {
 function SummaryHeader({ name, description, currentStreak }) {
   return (
     <>
-      <div className="flex justify-between">
-        <h3 className="text-2xl font-medium">{name}</h3>
+      <div className="flex justify-between items-start gap-2">
+        <h3 className="text-lg sm:text-xl font-semibold">{name}</h3>
         {currentStreak > 0 && (
-          <div className="flex items-center gap-2">
-            <IconFlame color="blue" />
-            <p className="text-2xl text-blue-700">{currentStreak}</p>
+          <div className="flex items-center gap-1 shrink-0 px-2 py-1 bg-orange-50 rounded-lg">
+            <IconFlame size={16} className="text-orange-500" />
+            <p className="text-sm font-semibold text-orange-500">
+              {currentStreak}
+            </p>
           </div>
         )}
       </div>
-      <div>
-        <p className="opacity-70 pr-12">{description}</p>
-      </div>
+      {description && (
+        <p className="text-sm text-gray-400 line-clamp-2">{description}</p>
+      )}
     </>
   );
 }
@@ -131,7 +130,7 @@ export default function HabitSummary({
     Math.round((weeklyCheckins / 7) * 100)
   );
   return (
-    <div className="flex flex-col p-6 border border-gray-100 rounded-md gap-4">
+    <div className="flex flex-col p-5 sm:p-6 border border-gray-100 rounded-xl gap-4 hover:shadow-md transition-all duration-300">
       <SummaryHeader
         name={name}
         description={description}

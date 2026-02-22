@@ -17,7 +17,7 @@ import { useAuth } from "../../store/authContext";
 
 const schema = z.object({
   email: z.email({ error: "Invalid email" }),
-  password: z.string().min(7, "Password must be at least 8 characters long"),
+  password: z.string().min(8, "Password must be at least 8 characters long"),
 });
 
 export default function Login() {
@@ -35,7 +35,7 @@ export default function Login() {
   const handleLogin = async (data) => {
     try {
       await login(data.email, data.password);
-      navigate("/");
+      navigate("/dashboard");
     } catch (e) {
       console.error(e);
       form.setErrors({ root: "Invalid email or password" });
@@ -47,17 +47,18 @@ export default function Login() {
       size={420}
       className="flex grow justify-center items-stretch flex-col gap-4"
     >
-      <Title className="self-center">Welcome back!</Title>
+      <Title className="self-center font-outfit!" fw={600}>Welcome back</Title>
 
-      <Text className="self-center">
-        Do not have an account yet? <Anchor component={Link} to="/register">Create account</Anchor>
+      <Text c="dimmed" size="sm" className="self-center">
+        Do not have an account yet?{" "}
+        <Anchor component={Link} to="/register">Create account</Anchor>
       </Text>
 
-      <Paper withBorder shadow="sm" p={22} className="mt-4!" radius="md">
-        <form onSubmit={form.onSubmit(handleLogin)}>
+      <Paper shadow="xs" p={28} className="mt-2!" radius="lg">
+        <form onSubmit={form.onSubmit(handleLogin)} className="flex flex-col gap-4">
           <TextInput
             label="Email"
-            placeholder="you@mantine.dev"
+            placeholder="you@example.com"
             radius="md"
             key={form.key("email")}
             {...form.getInputProps("email")}
@@ -65,7 +66,6 @@ export default function Login() {
           <PasswordInput
             label="Password"
             placeholder="Your password"
-            mt="md"
             radius="md"
             key={form.key("password")}
             {...form.getInputProps("password")}
@@ -74,13 +74,13 @@ export default function Login() {
             disabled={form.submitting || !form.isValid()}
             type="submit"
             fullWidth
-            mt="xl"
+            mt="xs"
             radius="md"
           >
-            {form.submitting ? "Loading..." : "Sign in"}
+            {form.submitting ? "Signing in..." : "Sign in"}
           </Button>
           {form.errors.root && (
-            <InputError size="xl" mt={"md"}>
+            <InputError size="md">
               {form.errors.root}
             </InputError>
           )}

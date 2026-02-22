@@ -9,16 +9,11 @@ import Container from "../ui/Container";
 
 export default function Footer() {
   return (
-    <div className="mt-32 border-t border-solid border-gray-300 ">
-      <Container className="justify-between items-center py-8 @max-xs:flex-col">
-        <img src={logo} alt="Habit tracker" className="h-10" />
+    <div className="mt-auto border-t border-solid border-gray-100">
+      <Container className="flex-col sm:flex-row justify-between items-center py-6 gap-4">
+        <img src={logo} alt="Habit Tracker" className="h-9" />
 
-        <Group
-          gap={0}
-          className="@max-xs:mt-4"
-          justify="flex-end"
-          wrap="nowrap"
-        >
+        <Group gap={0} justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">
             <IconBrandTwitter size={18} stroke={1.5} />
           </ActionIcon>

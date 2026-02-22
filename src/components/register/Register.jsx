@@ -35,7 +35,7 @@ export default function Register() {
   const handleRegister = async (data) => {
     try {
       await register(data.email.trim(), data.password.trim());
-      navigate("/");
+      navigate("/dashboard");
     } catch (e) {
       console.error(e);
       form.setErrors({ email: "Email is already taken" });
@@ -47,20 +47,20 @@ export default function Register() {
       size={420}
       className="flex grow justify-center items-stretch flex-col gap-4"
     >
-      <Title className="self-center">Create your account</Title>
+      <Title className="self-center font-outfit!" fw={600}>Create your account</Title>
 
-      <Text className="self-center">
+      <Text c="dimmed" size="sm" className="self-center">
         Already have an account?{" "}
         <Anchor component={Link} to="/login">
           Log in
         </Anchor>
       </Text>
 
-      <Paper withBorder shadow="sm" p={22} className="mt-4!" radius="md">
-        <form onSubmit={form.onSubmit(handleRegister)}>
+      <Paper shadow="xs" p={28} className="mt-2!" radius="lg">
+        <form onSubmit={form.onSubmit(handleRegister)} className="flex flex-col gap-4">
           <TextInput
             label="Email"
-            placeholder="you@mantine.dev"
+            placeholder="you@example.com"
             radius="md"
             key={form.key("email")}
             {...form.getInputProps("email")}
@@ -68,7 +68,6 @@ export default function Register() {
           <PasswordInput
             label="Password"
             placeholder="Your password"
-            mt="md"
             radius="md"
             key={form.key("password")}
             {...form.getInputProps("password")}
@@ -77,13 +76,13 @@ export default function Register() {
             disabled={form.submitting || !form.isValid()}
             type="submit"
             fullWidth
-            mt="xl"
+            mt="xs"
             radius="md"
           >
-            {form.submitting ? "Loading..." : "Sign up"}
+            {form.submitting ? "Creating account..." : "Sign up"}
           </Button>
           {form.errors.root && (
-            <InputError size="xl" mt={"md"}>
+            <InputError size="md">
               {form.errors.root}
             </InputError>
           )}

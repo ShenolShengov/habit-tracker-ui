@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <MantineProvider>
-      <Notifications position="top-right" />
+      <Notifications position="top-right" autoClose={2500} />
       <AuthProvider>
         <App />
       </AuthProvider>

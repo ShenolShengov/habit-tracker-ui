@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router";
 import useDeleteHabit from "../../../hooks/habits/useDeleteHabit";
 import useCheckIn from "../../../hooks/checkIn/useCheckIn";
+import { notifications } from "@mantine/notifications";
 
 function ActionButtons({ id }) {
   const { mutateAsync: deleteHabitMutation, isPending: isDeleteLoading } =
@@ -17,6 +18,11 @@ function ActionButtons({ id }) {
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete this habit?")) {
       await deleteHabitMutation(id);
+      notifications.show({
+        title: "Habit deleted",
+        message: "The habit has been removed",
+        color: "red",
+      });
     }
   };
 
@@ -54,8 +60,17 @@ function CheckInAction({ checkedInToday, id }) {
   const handleCheckIn = async () => {
     try {
       await checkIn(id);
+      notifications.show({
+        title: "Checked in",
+        message: "Great job, keep it up!",
+        color: "green",
+      });
     } catch {
-      alert("Error occurred while checking in. Please try again later.");
+      notifications.show({
+        title: "Check-in failed",
+        message: "Something went wrong. Please try again later.",
+        color: "red",
+      });
     }
   };
 

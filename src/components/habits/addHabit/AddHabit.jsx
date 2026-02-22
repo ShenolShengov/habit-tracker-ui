@@ -8,6 +8,7 @@ import habitSchema from "../../../schemas/habit.schema";
 import useCreateHabit from "../../../hooks/habits/useCreateHabit";
 import useUpdateHabit from "../../../hooks/habits/useUpdateHabit";
 import useHabit from "../../../hooks/habits/useHabit";
+import { notifications } from "@mantine/notifications";
 
 const inputClasses =
   "border border-gray-200 border-solid rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm";
@@ -51,8 +52,18 @@ export default function AddHabit() {
     try {
       if (isEditing) {
         await editHabitMutation({ id, initialData, data });
+        notifications.show({
+          title: "Habit updated",
+          message: "Your changes have been saved",
+          color: "green",
+        });
       } else {
         await addHabitMutation(data);
+        notifications.show({
+          title: "Habit created",
+          message: "Start tracking your new habit today!",
+          color: "green",
+        });
       }
       navigate("/dashboard");
     } catch (e) {

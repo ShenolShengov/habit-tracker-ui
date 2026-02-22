@@ -1,146 +1,106 @@
-# React Habit Tracker
+# Habit Tracker
 
-A simple habit-tracking web application built with React + Vite.
+A full-stack habit tracking application built with **React**, **Vite**, and a **Spring Boot** backend.
 
-## About the project
+Track daily habits, monitor streaks, visualize progress with charts, and manage your profile — all in a clean, responsive UI.
 
-This app helps you manage daily habits — you can add, edit, and delete habits, mark habits as completed for each day, and track your progress over time. All data is stored locally (in browser storage), so you don’t need a backend.  
+## Tech Stack
 
----
+**Frontend** — React 19, Vite, Mantine v8, Tailwind CSS v4, TanStack Query, Recharts, Zod
 
-## 📌 Requirements
+**Backend** — Spring Boot (Dockerized), PostgreSQL, Redis, JWT Auth
 
-To run this project locally, you need:
+## Requirements
 
-- **Node.js** (version 18+ recommended)  
-- **npm**
-- **Docker**  
+- [Git](https://git-scm.com/)
+- [Node.js](https://nodejs.org/) v18+
+- [Docker](https://www.docker.com/)
 
----
+## Getting Started
 
-## 🚀 Getting Started / Installation
-
-Follow the steps below to run the full project (frontend + backend).
-
-### 1️⃣ Clone the repository
+### 1. Clone and install
 
 ```bash
 git clone https://github.com/ShenolShengov/react-habit-tracker.git
 cd react-habit-tracker
-```
-
-### 2️⃣ Install frontend dependencies
-
-```bash
 npm install
 ```
 
-## 🐳 Backend Setup (Docker)
+### 2. Configure environment
 
-The backend server is fully dockerized.  
-Use the provided **compose.yml** to start it.
+Create a `.env` file in the project root:
 
-#### If you are on Mac and have problems running backend try to add this configuration to app service in **compse.yml**:
-
-```bash
-platform: linux/arm64
-```
-or pull backend image with this command:
-
-```bash
-docker pull --platform=linux/amd64 shenol10/habit-tracker-api-app:1.0.0
-```
-
-### 3️⃣ Configure environment variables
-
-Create a `.env` file with required backend environment variables
-
-**Required backend environment variables:**
-
-```
+```env
 POSTGRES_USER=root
 POSTGRES_PASSWORD=root
 POSTGRES_DB=habit_tracker_db
-JWT_SECRET=your-jwt-secret
+JWT_SECRET=your-256-bit-secret
 ```
-You can change first three env variable or use this shown in the example
 
-You can generate jwt secret [here](https://jwtsecrets.com/)  (at least 256 bits)
+Generate a JWT secret (at least 256 bits) at [jwtsecrets.com](https://jwtsecrets.com/).
 
-### 4️⃣ Start backend server
-
-Run:
+### 3. Start the backend
 
 ```bash
 docker compose up -d
 ```
 
+This starts the API server on `:8080`, PostgreSQL on `:5432`, and Redis on `:6379`.
 
-This will:
+> **Apple Silicon:** If the backend fails to start, add `platform: linux/arm64` to the `app` service in `compose.yml`.
 
-- Build and start your backend container  
-- Expose the API on the ports defined in the compose file  
-
-To stop the backend:
+To stop:
 
 ```bash
 docker compose down
 ```
 
-If you have problem with starting backend server you can refer to the [backend repository](https://github.com/hyuseinleshov/habit-tracker-api) for more info 
+For more backend details, see the [backend repository](https://github.com/hyuseinleshov/habit-tracker-api).
 
----
-
-## 🖥️ Frontend Development Server
-
-After starting the backend, run the frontend:
+### 4. Start the frontend
 
 ```bash
 npm run dev
 ```
 
-Then open:
+Open [http://localhost:5173](http://localhost:5173).
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server with hot reload |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build |
+| `npm run lint` | Run ESLint |
+
+## Features
+
+- Create, edit, and delete habits
+- Daily check-ins with streak tracking
+- Dashboard with stats overview and weekly chart
+- Calendar view of check-in history
+- Monthly check-in breakdown charts
+- User profile management
+- Admin panel for user management
+- JWT authentication with automatic token refresh
+- Fully responsive (mobile + desktop)
+
+## Project Structure
 
 ```
-http://localhost:5173
+src/
+├── api/            # Axios instance and endpoint definitions
+├── components/     # UI components (dashboard, habits, home, etc.)
+├── config/         # dayjs setup
+├── guards/         # Route guards (Auth, Guest, Admin)
+├── hooks/          # TanStack Query hooks
+├── layouts/        # Guest, Auth, and Dashboard layouts
+├── schemas/        # Zod validation schemas
+├── service/        # API service functions
+└── store/          # Auth context (JWT state management)
 ```
 
----
-## 🛠️ Available Scripts
+## License
 
-- `npm run dev` — start development server (hot reload)  
-- `npm run build` — build for production  
-- `npm run preview` — preview the production build  
-- `npm run lint` — format the code base
-
-## 🧩 Features
-
-- Add new habits with custom name and descrpition  
-- Mark habits as done/not done for each day  
-- Edit or delete existing habits  
-- Persist habit data locally (so it stays after reload)  
-- Simple, clean UI for easy tracking  
-
-## 📂 Project Structure (simplified)
-
-```
-react-habit-tracker/
-├── src/         # React source files
-├── public/      # Static assets, HTML template
-├── package.json
-├── vite.config.js
-└── README.md
-```
-
-## ⚡ Usage
-
-- Open the app in browser after running dev server
-- Create account or login in existing one
-- Use the “Add Habit” button to create a new habit  
-- Mark habits as done each day  
-- Edit or remove habits as needed  
-
-## 📄 License
-
-This project is open-source and free to use.  
-
+This project is open-source and free to use.

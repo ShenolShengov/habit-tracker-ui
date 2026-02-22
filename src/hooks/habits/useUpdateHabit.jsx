@@ -8,6 +8,9 @@ export default function useUpdateHabit(options) {
     mutationFn: habitService.edit,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["habits"] });
+      queryClient.invalidateQueries({ queryKey: ["habit"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-overview"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-weekly"] });
     },
     ...options,
   });

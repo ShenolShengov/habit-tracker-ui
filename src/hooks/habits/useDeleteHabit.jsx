@@ -8,6 +8,9 @@ export default function useDeleteHabit(options) {
     mutationFn: habitService.deleteById,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["habits"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-overview"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-weekly"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-best-streak"] });
     },
     ...options,
   });

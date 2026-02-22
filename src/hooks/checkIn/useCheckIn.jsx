@@ -8,6 +8,10 @@ export default function useCheckIn(options) {
     mutationFn: checkInService.checkIn,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["habits"] });
+      queryClient.invalidateQueries({ queryKey: ["habit"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-overview"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-weekly"] });
+      queryClient.invalidateQueries({ queryKey: ["stats-best-streak"] });
     },
     ...options,
   });

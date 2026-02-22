@@ -70,7 +70,7 @@ export default function StatsOverview() {
         <StatCard
           icon={<IconCalendarCheck size={22} />}
           label="Completed today"
-          value={`${weekly?.habitsCompletedToday ?? 0} / ${weekly?.totalHabits ?? 0}`}
+          value={`${weekly?.completeToday ?? 0} / ${weekly?.totalHabits ?? 0}`}
         />
       </div>
       {chartData.length > 0 && (

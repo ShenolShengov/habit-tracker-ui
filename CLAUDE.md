@@ -13,14 +13,9 @@ npm run lint      # run ESLint
 
 There are no tests in this project.
 
-## Backend Setup
+## Docker Setup
 
-The backend is a dockerized Spring Boot API (`shenol10/habit-tracker-api-app:1.0.0`) backed by PostgreSQL and Redis. It must be running for the frontend to work.
-
-```bash
-docker compose up -d    # start backend (API on :8080, Postgres on :5432, Redis on :6379)
-docker compose down     # stop backend
-```
+The backend is a dockerized Spring Boot API (`shenol10/habit-tracker-api-app:1.0.0`) backed by PostgreSQL and Redis.
 
 Required `.env` file in the project root:
 ```
@@ -30,7 +25,19 @@ POSTGRES_DB=habit_tracker_db
 JWT_SECRET=<256-bit secret>
 ```
 
-On Apple Silicon, if the backend fails to start, add `platform: linux/arm64` to the `app` service in `compose.yml`.
+**Development** — runs only the backend (API + Postgres + Redis). Use with `npm run dev` for the frontend:
+```bash
+docker compose -f compose-dev.yml up -d    # API on :8080, Postgres on :5432, Redis on :6379
+docker compose -f compose-dev.yml down
+```
+
+**Production** — runs the full stack including the frontend served via nginx:
+```bash
+docker compose up -d    # Frontend on :5173, API on :8080, Postgres on :5432, Redis on :6379
+docker compose down
+```
+
+On Apple Silicon, if the backend fails to start, add `platform: linux/arm64` to the `app` service in the compose file.
 
 ## Architecture
 

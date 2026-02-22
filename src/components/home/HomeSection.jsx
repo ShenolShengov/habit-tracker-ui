@@ -4,9 +4,11 @@ export default function Section({
   direction = "column",
   ...props
 }) {
-  let classes = "w-[90%] flex justify-between items-center gap-24";
+  let classes = "w-full flex justify-between items-center gap-8 sm:gap-12 lg:gap-16";
   if (direction === "column") {
     classes += " flex-col";
+  } else {
+    classes += " flex-col lg:flex-row";
   }
   return (
     <div className={classes} {...props}>

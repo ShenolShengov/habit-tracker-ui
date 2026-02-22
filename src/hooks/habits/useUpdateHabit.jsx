@@ -1,12 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import habitService from "../../service/habitService";
 
-const HABIT_UPDATE_MUTATION_KEY = "update-habit";
-
 export default function useUpdateHabit(options) {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: [HABIT_UPDATE_MUTATION_KEY],
+    mutationKey: ["update-habit"],
     mutationFn: habitService.edit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["habits"] });
+    },
     ...options,
   });
 }

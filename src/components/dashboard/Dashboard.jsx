@@ -31,7 +31,7 @@ export default function Dashboard() {
         <StatsOverview />
         <div className="flex flex-col gap-8">
           <h2 className="text-3xl font-semibold">My habits</h2>
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {habits.map((habit) => (
               <HabitSummary
                 key={habit.id}

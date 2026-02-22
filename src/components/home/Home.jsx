@@ -6,7 +6,7 @@ import Container from "../ui/Container";
 
 export default function Home() {
   return (
-    <Container className="flex-col justify-center items-center gap-52">
+    <Container className="flex-col justify-center items-center gap-20 sm:gap-32 lg:gap-40 py-8">
       <LandingSection />
       <HowHabitWorks />
       <Features />

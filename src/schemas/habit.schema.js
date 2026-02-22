@@ -4,7 +4,7 @@ const habitSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "Name is reqired")
+    .min(1, "Name is required")
     .max(30, "Name must be between 1 and 30 symbols"),
   description: z
     .string()

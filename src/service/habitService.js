@@ -46,7 +46,7 @@ const habitService = {
     return api.patch(endpoints.habits.byId(id), updatedData);
   },
   async byId(id, { signal }) {
-    const res = await api.get(endpoints.habits.byId(id, { signal }));
+    const res = await api.get(endpoints.habits.byId(id), { signal });
     return res.data;
   },
   async deleteById(id) {

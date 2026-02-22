@@ -14,7 +14,7 @@ import HabitDetails from "./components/habits/habitDetails/HabitDetails";
 import Profile from "./components/profile/Profile";
 import AdminUsers from "./components/admin/AdminUsers";
 import "./config/dayjsSetup";
-import NotFonud from "./components/notFound/NotFound";
+import NotFound from "./components/notFound/NotFound";
 
 export default function App() {
   return (
@@ -41,7 +41,7 @@ export default function App() {
             </Route>
           </Route>
         </Route>
-        <Route path="*" element={<NotFonud />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

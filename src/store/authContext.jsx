@@ -110,7 +110,7 @@ export function AuthProvider({ children }) {
       try {
         await refresh();
       } catch {
-        console.log("No refresth token on app load");
+        console.log("No refresh token on app load");
       } finally {
         setIsAuthLoading(false);
       }

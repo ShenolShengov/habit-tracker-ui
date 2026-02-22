@@ -1,12 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import habitService from "../../service/habitService";
 
-const HABIT_CREATE_MUTATION_KEY = "create-habits";
-
 export default function useCreateHabit(options) {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: [HABIT_CREATE_MUTATION_KEY],
+    mutationKey: ["create-habit"],
     mutationFn: habitService.add,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["habits"] });
+    },
     ...options,
   });
 }

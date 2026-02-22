@@ -1,12 +1,15 @@
 import { Button } from "@mantine/core";
+import { Link } from "react-router";
 import Section from "./HomeSection";
 import SectionHeader from "./SectionHeader";
 
 function SingleStatistics({ number, description }) {
   return (
-    <div className="flex flex-col gap-4 flex-1/2 border-l-[3px] pl-8 border-gray-300">
-      <h3 className="font-outfit font-bold text-7xl">{number}</h3>
-      <p className="font-outfit font-semibold">{description}</p>
+    <div className="flex flex-col gap-1 sm:gap-2 flex-1/2 border-l-2 pl-4 sm:pl-8 border-blue-200">
+      <h3 className="font-outfit font-bold text-4xl sm:text-5xl text-gray-900">{number}</h3>
+      <p className="font-outfit font-medium text-sm text-gray-500">
+        {description}
+      </p>
     </div>
   );
 }
@@ -18,26 +21,23 @@ export default function StatsSection() {
         center={false}
         preTitle="Insights"
         title="Your habit performance at a glance"
-        description="Track your progress with precision. See how your daily efforts
-            translate into meaningful personal growth."
+        description="Track your progress with precision. See how your daily efforts translate into meaningful personal growth."
       >
         <Button
-          component="a"
-          href="https://github.com/mantinedev/mantine"
-          size="xl"
+          component={Link}
+          to="/register"
+          size="lg"
           variant="default"
-          classNames={{
-            root: "border-3! font-normal! font-outfit!",
-          }}
-          className="h-14 px-10! mt-4!"
+          radius="md"
+          className="mt-4!"
         >
-          View stats
+          Start tracking
         </Button>
       </SectionHeader>
-      <div className="flex-1 flex flex-wrap gap-y-16">
+      <div className="flex-1 flex flex-wrap gap-y-8 sm:gap-y-12 w-full">
         <SingleStatistics number={87} description="Best streak" />
         <SingleStatistics number={65} description="Current streak" />
-        <SingleStatistics number={42} description="Montly check-ins" />
+        <SingleStatistics number={42} description="Monthly check-ins" />
         <SingleStatistics number={95} description="Total habits tracked" />
       </div>
     </Section>

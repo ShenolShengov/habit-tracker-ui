@@ -10,6 +10,7 @@ import useProfile from "../../hooks/user/useProfile";
 import useUpdateProfile from "../../hooks/user/useUpdateProfile";
 import useDeleteAccount from "../../hooks/user/useDeleteAccount";
 import { useAuth } from "../../store/authContext";
+import { notifications } from "@mantine/notifications";
 
 const inputClasses =
   "border border-gray-200 border-solid rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm";
@@ -49,23 +50,46 @@ export default function Profile() {
 
   const handleUpdate = async (data) => {
     try {
-      const payload = {
-        ...data,
-        age: data.age === "" ? null : Number(data.age),
-        firstName: data.firstName || null,
-        lastName: data.lastName || null,
-      };
+      const payload = {};
+
+      if (data.email !== profile.email) payload.email = data.email;
+      if ((data.firstName || null) !== (profile.firstName ?? null))
+        payload.firstName = data.firstName || null;
+      if ((data.lastName || null) !== (profile.lastName ?? null))
+        payload.lastName = data.lastName || null;
+
+      const newAge = data.age === "" ? null : Number(data.age);
+      if (newAge !== (profile.age ?? null)) payload.age = newAge;
+
+      if (data.timeZone !== profile.timeZone) payload.timeZone = data.timeZone;
+
+      if (Object.keys(payload).length === 0) return;
+
       await updateProfile(payload);
       await refresh();
       form.resetTouched();
+      notifications.show({
+        title: "Profile updated",
+        message: "Your changes have been saved",
+        color: "green",
+      });
     } catch (e) {
-      form.setErrors({ email: e.response?.data?.message ?? "Update failed" });
+      const msg = e.response?.data?.message ?? "Update failed";
+      const firstTouched = form.getTouched();
+      const errorField =
+        Object.keys(firstTouched).find((key) => firstTouched[key]) ?? "email";
+      form.setErrors({ [errorField]: msg });
     }
   };
 
   const handleDeleteAccount = async () => {
     try {
       await deleteAccount();
+      notifications.show({
+        title: "Account deleted",
+        message: "Your account has been permanently removed",
+        color: "red",
+      });
       await logout();
       navigate("/", { replace: true });
     } catch {

@@ -7,7 +7,7 @@ const userService = {
     return res.data;
   },
   updateProfile(data) {
-    return api.put(endpoints.user.me, data, { withCredentials: true });
+    return api.patch(endpoints.user.me, data, { withCredentials: true });
   },
   deleteAccount() {
     return api.delete(endpoints.user.me);

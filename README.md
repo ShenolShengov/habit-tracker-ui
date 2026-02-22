@@ -39,15 +39,15 @@ JWT_SECRET=your-256-bit-secret
 
 Generate a JWT secret (at least 256 bits) at [jwtsecrets.com](https://jwtsecrets.com/).
 
-### 3. Start the backend
+### 3. Run the full app (single command)
 
 ```bash
 docker compose up -d
 ```
 
-This starts the API server on `:8080`, PostgreSQL on `:5432`, and Redis on `:6379`.
+This builds the frontend image and starts everything: Frontend on `:5173`, API on `:8080`, PostgreSQL on `:5432`, and Redis on `:6379`.
 
-> **Apple Silicon:** If the backend fails to start, add `platform: linux/arm64` to the `app` service in `compose.yml`.
+Open [http://localhost:5173](http://localhost:5173).
 
 To stop:
 
@@ -55,15 +55,18 @@ To stop:
 docker compose down
 ```
 
-For more backend details, see the [backend repository](https://github.com/hyuseinleshov/habit-tracker-api).
+### 3b. Development mode (alternative)
 
-### 4. Start the frontend
+If you prefer hot reload during development, start only the backend services and run the frontend with Vite:
 
 ```bash
-npm run dev
+docker compose -f compose-dev.yml up -d   # backend only
+npm run dev                                 # frontend with hot reload
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+> **Apple Silicon:** If the backend fails to start, add `platform: linux/arm64` to the `app` service in the compose file.
+
+For more backend details, see the [backend repository](https://github.com/hyuseinleshov/habit-tracker-api).
 
 ## Scripts
 

@@ -65,8 +65,7 @@ services:
       - habit-tracker-network
 
   frontend:
-    build:
-      context: .
+    image: shenol10/habit-tracker-frontend:1.0.0
     container_name: habit-tracker-frontend
     restart: always
     ports:

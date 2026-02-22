@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Checkbox, Pagination, Table } from "@mantine/core";
+import { IconUsers } from "@tabler/icons-react";
 import DashboardSection from "../ui/DashboardSection";
 import AppLoader from "../loader/AppLoader";
 import useUsers from "../../hooks/admin/useUsers";
@@ -18,8 +19,8 @@ export default function AdminUsers() {
   if (error) {
     return (
       <DashboardSection className="gap-8">
-        <h1 className="text-3xl font-semibold">User Management</h1>
-        <p className="text-red-600">Access denied. You do not have permission to view this page.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold">User Management</h1>
+        <p className="text-red-500 text-sm">Access denied. You do not have permission to view this page.</p>
       </DashboardSection>
     );
   }
@@ -29,8 +30,18 @@ export default function AdminUsers() {
 
   return (
     <DashboardSection className="gap-8">
-      <div className="flex flex-col pb-4 border-b gap-4 border-gray-400">
-        <h1 className="text-3xl font-semibold">User Management</h1>
+      <div className="flex flex-col pb-4 border-b gap-3 border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-blue-50 rounded-xl text-blue-600">
+            <IconUsers size={22} />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-semibold">User Management</h1>
+            <p className="text-sm text-gray-400 mt-0.5">
+              {data?.page?.totalElements ?? users.length} total users
+            </p>
+          </div>
+        </div>
       </div>
 
       <Checkbox
@@ -42,40 +53,61 @@ export default function AdminUsers() {
         }}
       />
 
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Email</Table.Th>
-            <Table.Th>First Name</Table.Th>
-            <Table.Th>Last Name</Table.Th>
-            <Table.Th>Age</Table.Th>
-            <Table.Th>Time Zone</Table.Th>
-            <Table.Th>Status</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {users?.map((user) => (
-            <Table.Tr key={user.email}>
-              <Table.Td>{user.email}</Table.Td>
-              <Table.Td>{user.firstName ?? "-"}</Table.Td>
-              <Table.Td>{user.lastName ?? "-"}</Table.Td>
-              <Table.Td>{user.age ?? "-"}</Table.Td>
-              <Table.Td>{user.timeZone ?? "-"}</Table.Td>
-              <Table.Td>
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    user.deletedAt
-                      ? "bg-red-100 text-red-700"
-                      : "bg-green-100 text-green-700"
-                  }`}
-                >
-                  {user.deletedAt ? "Deleted" : "Active"}
-                </span>
-              </Table.Td>
+      {/* Desktop table */}
+      <div className="hidden sm:block overflow-x-auto border border-gray-100 rounded-xl">
+        <Table striped highlightOnHover>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Email</Table.Th>
+              <Table.Th>First Name</Table.Th>
+              <Table.Th>Last Name</Table.Th>
+              <Table.Th>Age</Table.Th>
+              <Table.Th>Time Zone</Table.Th>
+              <Table.Th>Status</Table.Th>
             </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+          </Table.Thead>
+          <Table.Tbody>
+            {users?.map((user) => (
+              <Table.Tr key={user.email}>
+                <Table.Td className="font-medium">{user.email}</Table.Td>
+                <Table.Td>{user.firstName ?? "-"}</Table.Td>
+                <Table.Td>{user.lastName ?? "-"}</Table.Td>
+                <Table.Td>{user.age ?? "-"}</Table.Td>
+                <Table.Td>{user.timeZone ?? "-"}</Table.Td>
+                <Table.Td>
+                  <StatusBadge deletedAt={user.deletedAt} />
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      </div>
+
+      {/* Mobile card list */}
+      <div className="sm:hidden flex flex-col gap-3">
+        {users?.map((user) => (
+          <div
+            key={user.email}
+            className="border border-gray-100 rounded-xl p-4 flex flex-col gap-2.5"
+          >
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-sm truncate mr-2">{user.email}</p>
+              <StatusBadge deletedAt={user.deletedAt} />
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-500">
+              <span>
+                {[user.firstName, user.lastName].filter(Boolean).join(" ") || "-"}
+              </span>
+              <span>{user.age ? `Age ${user.age}` : ""}</span>
+              <span className="col-span-2 text-xs text-gray-400">{user.timeZone ?? "-"}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {users.length === 0 && (
+        <p className="text-center text-gray-400 py-8 text-sm">No users found.</p>
+      )}
 
       {totalPages > 1 && (
         <div className="flex justify-center mt-4">
@@ -89,5 +121,19 @@ export default function AdminUsers() {
         </div>
       )}
     </DashboardSection>
+  );
+}
+
+function StatusBadge({ deletedAt }) {
+  return (
+    <span
+      className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
+        deletedAt
+          ? "bg-red-50 text-red-600"
+          : "bg-green-50 text-green-600"
+      }`}
+    >
+      {deletedAt ? "Deleted" : "Active"}
+    </span>
   );
 }

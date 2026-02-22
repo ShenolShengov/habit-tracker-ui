@@ -11,6 +11,9 @@ import useUpdateProfile from "../../hooks/user/useUpdateProfile";
 import useDeleteAccount from "../../hooks/user/useDeleteAccount";
 import { useAuth } from "../../store/authContext";
 
+const inputClasses =
+  "border border-gray-200 border-solid rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm";
+
 export default function Profile() {
   const navigate = useNavigate();
   const { logout, refresh } = useAuth();
@@ -78,114 +81,117 @@ export default function Profile() {
 
   return (
     <DashboardSection className="gap-8">
-      <div className="flex flex-col pb-4 border-b gap-4 border-gray-400">
-        <h1 className="text-3xl font-semibold">Profile</h1>
-        <p className="opacity-70">Manage your account settings</p>
+      <div className="flex flex-col pb-4 border-b gap-3 border-gray-200">
+        <h1 className="text-2xl sm:text-3xl font-semibold">Profile</h1>
+        <p className="text-sm text-gray-400">Manage your account settings</p>
       </div>
 
       <form
-        className="flex flex-col gap-4 max-w-lg"
+        className="flex flex-col gap-5 max-w-lg"
         onSubmit={form.onSubmit(handleUpdate)}
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="email" className="font-normal">
-            Email <span className="text-red-500 pl-0.5 text-sm">*</span>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className="text-sm font-medium text-gray-700">
+            Email <span className="text-red-400 text-xs">*</span>
           </label>
           <input
             key={form.key("email")}
             {...form.getInputProps("email")}
-            className="border border-gray-400 border-solid rounded-xl px-3 py-2"
+            className={inputClasses}
             type="email"
           />
-          {errors.email && <Input.Error size="md">{errors.email}</Input.Error>}
+          {errors.email && <Input.Error size="sm">{errors.email}</Input.Error>}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="firstName" className="font-normal">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="firstName" className="text-sm font-medium text-gray-700">
               First Name
             </label>
             <input
               key={form.key("firstName")}
               {...form.getInputProps("firstName")}
-              className="border border-gray-400 border-solid rounded-xl px-3 py-2"
+              className={inputClasses}
               type="text"
             />
             {errors.firstName && (
-              <Input.Error size="md">{errors.firstName}</Input.Error>
+              <Input.Error size="sm">{errors.firstName}</Input.Error>
             )}
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="lastName" className="font-normal">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="lastName" className="text-sm font-medium text-gray-700">
               Last Name
             </label>
             <input
               key={form.key("lastName")}
               {...form.getInputProps("lastName")}
-              className="border border-gray-400 border-solid rounded-xl px-3 py-2"
+              className={inputClasses}
               type="text"
             />
             {errors.lastName && (
-              <Input.Error size="md">{errors.lastName}</Input.Error>
+              <Input.Error size="sm">{errors.lastName}</Input.Error>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="age" className="font-normal">
-            Age
-          </label>
-          <input
-            key={form.key("age")}
-            {...form.getInputProps("age")}
-            className="border border-gray-400 border-solid rounded-xl px-3 py-2"
-            type="number"
-            min={1}
-            max={150}
-          />
-          {errors.age && <Input.Error size="md">{errors.age}</Input.Error>}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="age" className="text-sm font-medium text-gray-700">
+              Age
+            </label>
+            <input
+              key={form.key("age")}
+              {...form.getInputProps("age")}
+              className={inputClasses}
+              type="number"
+              min={1}
+              max={150}
+            />
+            {errors.age && <Input.Error size="sm">{errors.age}</Input.Error>}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="timeZone" className="text-sm font-medium text-gray-700">
+              Time Zone <span className="text-red-400 text-xs">*</span>
+            </label>
+            <input
+              key={form.key("timeZone")}
+              {...form.getInputProps("timeZone")}
+              className={inputClasses}
+              type="text"
+            />
+            {errors.timeZone && (
+              <Input.Error size="sm">{errors.timeZone}</Input.Error>
+            )}
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="timeZone" className="font-normal">
-            Time Zone <span className="text-red-500 pl-0.5 text-sm">*</span>
-          </label>
-          <input
-            key={form.key("timeZone")}
-            {...form.getInputProps("timeZone")}
-            className="border border-gray-400 border-solid rounded-xl px-3 py-2"
-            type="text"
-          />
-          {errors.timeZone && (
-            <Input.Error size="md">{errors.timeZone}</Input.Error>
-          )}
-        </div>
-
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex items-center justify-end gap-3 mt-2">
           <Button
             type="submit"
             disabled={!form.isValid() || !form.isTouched()}
             variant="filled"
             size="md"
-            className="rounded-xl!"
+            radius="md"
           >
             {form.submitting ? "Saving..." : "Save changes"}
           </Button>
         </div>
       </form>
 
-      <div className="mt-8 pt-8 border-t border-gray-400 max-w-lg">
-        <h2 className="text-xl font-semibold text-red-600">Danger Zone</h2>
-        <p className="opacity-70 mt-2">
+      <div className="mt-6 pt-8 border-t border-gray-200 max-w-lg">
+        <h2 className="text-lg font-semibold text-red-600">Danger Zone</h2>
+        <p className="text-sm text-gray-400 mt-2">
           Once you delete your account, there is no going back.
         </p>
         <Button
           onClick={openDeleteModal}
-          variant="filled"
+          variant="light"
           color="red"
           size="md"
-          className="mt-4 rounded-xl!"
+          radius="md"
+          className="mt-4"
         >
           Delete Account
         </Button>
@@ -196,17 +202,19 @@ export default function Profile() {
         onClose={closeDeleteModal}
         title="Delete Account"
         centered
+        radius="lg"
       >
-        <p>
+        <p className="text-sm text-gray-600">
           Are you sure you want to delete your account? This action cannot be
           undone.
         </p>
-        <div className="flex justify-end gap-4 mt-6">
-          <Button variant="outline" onClick={closeDeleteModal}>
+        <div className="flex justify-end gap-3 mt-6">
+          <Button variant="default" radius="md" onClick={closeDeleteModal}>
             Cancel
           </Button>
           <Button
             color="red"
+            radius="md"
             onClick={handleDeleteAccount}
             loading={isDeleting}
           >

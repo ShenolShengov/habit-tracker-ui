@@ -1,4 +1,9 @@
-import { IconAdjustmentsCog } from "@tabler/icons-react";
+import {
+  IconChecks,
+  IconFlame,
+  IconTrophy,
+  IconCalendar,
+} from "@tabler/icons-react";
 import { useAuth } from "../../../store/authContext";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -6,12 +11,23 @@ import api from "../../../api/api";
 import endpoints from "../../../api/endpoints";
 import { Skeleton } from "@mantine/core";
 
-function Stat({ name, value }) {
+const colorMap = {
+  green: "bg-green-50 text-green-600",
+  orange: "bg-orange-50 text-orange-500",
+  yellow: "bg-yellow-50 text-yellow-500",
+  blue: "bg-blue-50 text-blue-600",
+};
+
+function Stat({ name, value, Icon, color }) {
   return (
-    <div className="flex justify-center items-center p-8 flex-col gap-4 border rounded-sm border-gray-400">
-      <IconAdjustmentsCog />
-      <h3 className="uppercase">{name}</h3>
-      <p className="text-5xl">{value}</p>
+    <div className="flex justify-center items-center p-5 sm:p-6 flex-col gap-3 border border-gray-100 rounded-xl hover:shadow-md transition-all duration-300">
+      <div className={`p-2.5 rounded-xl ${colorMap[color]}`}>
+        <Icon size={24} stroke={1.5} />
+      </div>
+      <h3 className="uppercase text-xs text-gray-400 tracking-wider font-medium">
+        {name}
+      </h3>
+      <p className="text-xl sm:text-2xl font-semibold">{value}</p>
     </div>
   );
 }
@@ -39,29 +55,44 @@ export default function HabitStats() {
       timeZone: user.timeZone,
     }
   );
+
   return (
-    <div className="flex flex-col gap-8">
-      <h2 className="text-3xl font-semibold">Overall stats</h2>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="flex flex-col gap-6">
+      <h2 className="text-xl sm:text-2xl font-semibold">Overall stats</h2>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {isLoading ? (
           <>
-            <Skeleton height={195} />
-            <Skeleton height={195} />
-            <Skeleton height={195} />
-            <Skeleton height={195} />
+            <Skeleton height={140} radius="lg" />
+            <Skeleton height={140} radius="lg" />
+            <Skeleton height={140} radius="lg" />
+            <Skeleton height={140} radius="lg" />
           </>
         ) : (
           <>
-            <Stat name="Total check-ins" value={stats.totalCheckIns} />
+            <Stat
+              name="Total check-ins"
+              value={stats.totalCheckIns}
+              Icon={IconChecks}
+              color="green"
+            />
             <Stat
               name="Current streak"
               value={`${stats.streaks.currentDays} Day/s`}
+              Icon={IconFlame}
+              color="orange"
             />
             <Stat
               name="Best streak"
               value={`${stats.streaks.best.days} Day/s`}
+              Icon={IconTrophy}
+              color="yellow"
             />
-            <Stat name="Created on" value={formattedCreatedOn} />
+            <Stat
+              name="Created on"
+              value={formattedCreatedOn}
+              Icon={IconCalendar}
+              color="blue"
+            />
           </>
         )}
       </div>

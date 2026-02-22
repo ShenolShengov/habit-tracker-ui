@@ -9,6 +9,9 @@ import useCreateHabit from "../../../hooks/habits/useCreateHabit";
 import useUpdateHabit from "../../../hooks/habits/useUpdateHabit";
 import useHabit from "../../../hooks/habits/useHabit";
 
+const inputClasses =
+  "border border-gray-200 border-solid rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm";
+
 export default function AddHabit() {
   const { id } = useParams();
   const isEditing = !!id;
@@ -63,55 +66,55 @@ export default function AddHabit() {
 
   return (
     <DashboardSection className="gap-8">
-      <div className="flex flex-col pb-4 border-b gap-4 border-gray-400">
-        <h1 className="text-3xl font-semibold">
+      <div className="flex flex-col pb-4 border-b gap-3 border-gray-200">
+        <h1 className="text-2xl sm:text-3xl font-semibold">
           {isEditing ? "Edit habit" : "Create new habit"}
         </h1>
         {!isEditing && (
-          <p className="opacity-70">
+          <p className="text-sm text-gray-400">
             Define your new habit to start tracking your progress.
           </p>
         )}
       </div>
       <form
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-5 max-w-lg"
         onSubmit={form.onSubmit(handleAction)}
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="font-normal">
-            Habit Name <span className="text-red-500 pl-0.5 text-sm">*</span>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="name" className="text-sm font-medium text-gray-700">
+            Habit Name <span className="text-red-400 text-xs">*</span>
           </label>
           <input
             key={form.key("name")}
             {...form.getInputProps("name")}
-            className="border border-gray-400 border-solid rounded-xl px-3 py-2"
+            className={inputClasses}
             placeholder="e.g., Drink 8 glasses of water"
             type="text"
           />
-          {errors.name && <Input.Error size="md">{errors.name}</Input.Error>}
+          {errors.name && <Input.Error size="sm">{errors.name}</Input.Error>}
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="description" className="font-normal">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="description" className="text-sm font-medium text-gray-700">
             Description
           </label>
           <textarea
             key={form.key("description")}
             {...form.getInputProps("description")}
-            className="border border-gray-400 border-solid rounded-xl px-3 py-2"
+            className={inputClasses}
             placeholder="Briefly describe your habit and why it's important"
             rows={4}
             type="text"
           />
           {errors.description && (
-            <Input.Error size="md">{errors.description}</Input.Error>
+            <Input.Error size="sm">{errors.description}</Input.Error>
           )}
         </div>
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex items-center justify-end gap-3 mt-2">
           <Button
             onClick={onCancel}
-            variant="outline"
+            variant="default"
             size="md"
-            className="rounded-xl!"
+            radius="md"
           >
             Cancel
           </Button>
@@ -120,12 +123,12 @@ export default function AddHabit() {
             disabled={!form.isValid() || !form.isTouched()}
             variant="filled"
             size="md"
-            className="rounded-xl!"
+            radius="md"
           >
             {form.submitting
-              ? "Loading..."
+              ? "Saving..."
               : isEditing
-              ? "Edit habit"
+              ? "Save changes"
               : "Create habit"}
           </Button>
         </div>

@@ -16,17 +16,35 @@ function NavbarLink({ Icon, label, path, ...props }) {
       <NavLink
         {...props}
         to={path}
-        className={({ isActive }) => {
-          return `w-[50px] h-[50px] rounded-lg flex justify-center items-center ${
+        className={({ isActive }) =>
+          `w-[44px] h-[44px] rounded-xl flex justify-center items-center transition-all duration-200 ${
             isActive
-              ? " text-blue-600 bg-blue-100"
-              : "text-gray-700 hover:bg-gray-50"
-          }`;
-        }}
+              ? "text-blue-600 bg-blue-50 shadow-sm"
+              : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+          }`
+        }
       >
         <Icon size={20} stroke={1.5} />
       </NavLink>
     </Tooltip>
+  );
+}
+
+function MobileNavLink({ Icon, label, path }) {
+  return (
+    <NavLink
+      to={path}
+      className={({ isActive }) =>
+        `flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl text-xs no-underline transition-all duration-200 ${
+          isActive
+            ? "text-blue-600"
+            : "text-gray-400 hover:text-gray-600"
+        }`
+      }
+    >
+      <Icon size={20} stroke={1.5} />
+      <span className="font-medium">{label}</span>
+    </NavLink>
   );
 }
 
@@ -51,38 +69,64 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-20 fixed top-0 h-screen self-stretch p-4 flex flex-col border-r border-solid border-gray-300">
-      <Center>
-        <img src={logoMini} alt="" />
-      </Center>
+    <>
+      {/* Desktop sidebar */}
+      <nav className="hidden md:flex w-[72px] fixed top-0 h-screen self-stretch py-6 flex-col items-center border-r border-solid border-gray-100 bg-white z-10">
+        <Center>
+          <img src={logoMini} alt="Habit Tracker" className="w-8" />
+        </Center>
 
-      <div className="flex-1 mt-[50px]">
+        <div className="flex-1 mt-10">
+          <Stack justify="center" gap={4}>
+            {links.map((link) => (
+              <NavbarLink {...link} key={link.label} />
+            ))}
+            {user?.isAdmin && (
+              <NavbarLink
+                Icon={IconShieldCheck}
+                label="Admin"
+                path="/admin"
+              />
+            )}
+          </Stack>
+        </div>
+
         <Stack justify="center" gap={0}>
-          {links.map((link) => {
-            return <NavbarLink {...link} key={link.label} />;
-          })}
-          {user?.isAdmin && (
-            <NavbarLink
-              Icon={IconShieldCheck}
-              label="Admin"
-              path="/admin"
-            />
-          )}
+          <Tooltip
+            label="Logout"
+            position="right"
+            transitionProps={{ duration: 0 }}
+          >
+            <button
+              onClick={handleLogout}
+              className="w-[44px] h-[44px] rounded-xl flex justify-center items-center text-gray-400 hover:text-red-500 hover:bg-red-50 cursor-pointer bg-transparent border-none transition-all duration-200"
+            >
+              <IconLogout size={20} stroke={1.5} />
+            </button>
+          </Tooltip>
         </Stack>
-      </div>
+      </nav>
 
-      <Stack justify="center" gap={0}>
-        <Tooltip
+      {/* Mobile bottom navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-solid border-gray-100 z-10 flex justify-around items-center px-2 py-1.5">
+        {links.map((link) => (
+          <MobileNavLink {...link} key={link.label} />
+        ))}
+        {user?.isAdmin && (
+          <MobileNavLink
+            Icon={IconShieldCheck}
+            label="Admin"
+            path="/admin"
+          />
+        )}
+        <button
           onClick={handleLogout}
-          label="Logout"
-          position="right"
-          transitionProps={{ duration: 0 }}
+          className="flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl text-xs text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none transition-all duration-200"
         >
-          <div className="w-[50px] h-[50px] rounded-lg flex justify-center items-center text-gray-700 hover:bg-gray-50">
-            <IconLogout size={20} stroke={1.5} />
-          </div>
-        </Tooltip>
-      </Stack>
-    </nav>
+          <IconLogout size={20} stroke={1.5} />
+          <span className="font-medium">Logout</span>
+        </button>
+      </nav>
+    </>
   );
 }

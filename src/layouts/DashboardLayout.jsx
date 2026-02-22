@@ -6,7 +6,7 @@ export default function DashboardLayout() {
   return (
     <Container className="min-h-dvh">
       <Navbar />
-      <div className="flex flex-1 pl-20">
+      <div className="flex flex-1 md:pl-[72px] pb-16 md:pb-0">
         <Outlet />
       </div>
     </Container>

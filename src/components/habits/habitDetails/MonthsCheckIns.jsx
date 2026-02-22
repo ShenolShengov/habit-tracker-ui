@@ -1,7 +1,7 @@
 import { BarChart } from "@mantine/charts";
 import dayjs from "dayjs";
 
-export default function MonthsCheckIns({ checkIns }) {
+export default function MonthsCheckIns({ checkIns, viewedYear }) {
   const yearInfo = () => {
     const yearStats = [...checkIns].reduce((acc, c) => {
       const month = dayjs(c).format("MMM");
@@ -16,7 +16,9 @@ export default function MonthsCheckIns({ checkIns }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-xl sm:text-2xl font-semibold">Check-ins by month</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold">
+        Check-ins by month &mdash; {viewedYear}
+      </h2>
       <div className="border border-gray-100 rounded-xl p-4 sm:p-6">
         <BarChart
           h={300}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import api from "../../../api/api";
@@ -13,14 +14,17 @@ export default function HabitDetails() {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [viewedYear, setViewedYear] = useState(dayjs().year());
 
   const fetchCheckIns = async () => {
-    const startOfTheYear = dayjs().tz(user.timeZone).startOf("year");
+    const from = dayjs().tz(user.timeZone).year(viewedYear).startOf("year");
+    const to = from.endOf("year");
     const res = await api.get(endpoints.checkins.habitBase(id), {
       params: {
         sort: "createdAt",
         size: 366,
-        from: startOfTheYear.toISOString(),
+        from: from.toISOString(),
+        to: to.toISOString(),
       },
     });
     return res.data.content.map((c) => dayjs(c.createdAt).format("YYYY-MM-DD"));
@@ -31,7 +35,7 @@ export default function HabitDetails() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["habit-details", id],
+    queryKey: ["habit-details", id, viewedYear],
     queryFn: fetchCheckIns,
     retry: false,
   });
@@ -51,8 +55,12 @@ export default function HabitDetails() {
         <h1 className="text-2xl sm:text-3xl font-semibold">Habit Details</h1>
       </div>
       <HabitStats />
-      <CheckInsHistory checkIns={checkIns} />
-      <MonthsCheckIns checkIns={checkIns} />
+      <CheckInsHistory
+        checkIns={checkIns}
+        viewedYear={viewedYear}
+        onYearChange={setViewedYear}
+      />
+      <MonthsCheckIns checkIns={checkIns} viewedYear={viewedYear} />
     </div>
   );
 }

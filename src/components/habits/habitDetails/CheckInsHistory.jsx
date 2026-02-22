@@ -1,7 +1,18 @@
+import { useState } from "react";
 import { Calendar } from "@mantine/dates";
 import dayjs from "dayjs";
 
-export default function CheckInsHistory({ checkIns }) {
+export default function CheckInsHistory({ checkIns, viewedYear, onYearChange }) {
+  const [date, setDate] = useState(dayjs().toDate());
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+    const newYear = dayjs(newDate).year();
+    if (newYear !== viewedYear) {
+      onYearChange(newYear);
+    }
+  };
+
   const markCheckins = (date) => {
     const formatted = dayjs(date).format("YYYY-MM-DD");
     if (!checkIns.includes(formatted)) {
@@ -20,8 +31,9 @@ export default function CheckInsHistory({ checkIns }) {
         <Calendar
           size="md"
           getDayProps={markCheckins}
-          defaultDate={dayjs().toDate()}
-          minDate={dayjs().startOf("year").toDate()}
+          date={date}
+          onDateChange={handleDateChange}
+          maxDate={dayjs().toDate()}
           numberOfColumns={2}
           hideOutsideDates
         />

@@ -1,16 +1,18 @@
 import { Button } from "@mantine/core";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function NotFound() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-dvh flex flex-col justify-center items-center font-outfit gap-4 px-4">
       <h1 className="text-6xl sm:text-8xl font-bold text-blue-600">404</h1>
       <p className="text-2xl sm:text-3xl text-center font-semibold">
-        Page not found
+        {t("notFound.title")}
       </p>
       <p className="text-sm sm:text-base text-center text-gray-400 max-w-sm">
-        The page you are looking for might have been removed or is temporarily
-        unavailable.
+        {t("notFound.description")}
       </p>
       <Button
         component={Link}
@@ -20,7 +22,7 @@ export default function NotFound() {
         radius="md"
         className="mt-2"
       >
-        Go to homepage
+        {t("notFound.goHome")}
       </Button>
     </div>
   );

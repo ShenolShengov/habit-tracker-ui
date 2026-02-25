@@ -1,12 +1,15 @@
 import { Box, Burger, Button, Drawer, Group, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useTranslation } from "react-i18next";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router";
 import { useAuth } from "../../store/authContext";
 import Container from "../ui/Container";
+import LanguageSwitcher from "../ui/LanguageSwitcher";
 
 export default function Header() {
   const { isAuthenticated, logout } = useAuth();
+  const { t } = useTranslation();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
 
@@ -20,24 +23,33 @@ export default function Header() {
       <header className="px-4 border-b border-solid border-gray-100">
         <Container className="items-center justify-between h-16">
           <Link to="/">
-            <img src={logo} alt="Habit Tracker" className="h-9" />
+            <img src={logo} alt={t("common.altLogo")} className="h-9" />
+          </Link>
+
+          {/* Center — Q&A link */}
+          <Link
+            to="/qa"
+            className="hidden sm:block text-sm font-medium text-gray-500 hover:text-gray-800 no-underline transition-colors duration-200"
+          >
+            {t("nav.qa")}
           </Link>
 
           <Group gap="sm" visibleFrom="sm">
+            <LanguageSwitcher />
             {isAuthenticated ? (
               <>
                 <Button component={Link} to="/dashboard" variant="default" radius="md">
-                  Dashboard
+                  {t("nav.dashboard")}
                 </Button>
-                <Button onClick={handleLogout} radius="md">Logout</Button>
+                <Button onClick={handleLogout} radius="md">{t("nav.logout")}</Button>
               </>
             ) : (
               <>
-                <Button component={Link} to="/login" variant="subtle" color="gray" radius="md">
-                  Sign in
+                <Button component={Link} to="/login" variant="default" radius="md">
+                  {t("nav.signIn")}
                 </Button>
                 <Button component={Link} to="/register" radius="md">
-                  Sign up
+                  {t("nav.signUp")}
                 </Button>
               </>
             )}
@@ -55,11 +67,19 @@ export default function Header() {
         opened={drawerOpened}
         onClose={closeDrawer}
         size="xs"
-        title={<img src={logo} alt="Habit Tracker" className="h-8" />}
+        title={<img src={logo} alt={t("common.altLogo")} className="h-8" />}
         hiddenFrom="sm"
         zIndex={1000}
       >
         <Stack gap="md" className="mt-4">
+          <LanguageSwitcher />
+          <Link
+            to="/qa"
+            onClick={closeDrawer}
+            className="text-sm font-medium text-gray-500 hover:text-gray-800 no-underline px-3 py-2 transition-colors duration-200"
+          >
+            {t("nav.qa")}
+          </Link>
           {isAuthenticated ? (
             <>
               <Button
@@ -70,10 +90,10 @@ export default function Header() {
                 radius="md"
                 onClick={closeDrawer}
               >
-                Dashboard
+                {t("nav.dashboard")}
               </Button>
               <Button fullWidth radius="md" onClick={handleLogout}>
-                Logout
+                {t("nav.logout")}
               </Button>
             </>
           ) : (
@@ -86,7 +106,7 @@ export default function Header() {
                 radius="md"
                 onClick={closeDrawer}
               >
-                Sign in
+                {t("nav.signIn")}
               </Button>
               <Button
                 component={Link}
@@ -95,7 +115,7 @@ export default function Header() {
                 radius="md"
                 onClick={closeDrawer}
               >
-                Sign up
+                {t("nav.signUp")}
               </Button>
             </>
           )}

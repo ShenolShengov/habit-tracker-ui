@@ -4,14 +4,17 @@ import {
   IconBrandYoutube,
 } from "@tabler/icons-react";
 import { ActionIcon, Group } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 import logo from "../../assets/logo.png";
 import Container from "../ui/Container";
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <div className="mt-auto border-t border-solid border-gray-100">
       <Container className="flex-col sm:flex-row justify-between items-center py-6 gap-4">
-        <img src={logo} alt="Habit Tracker" className="h-9" />
+        <img src={logo} alt={t("common.appName")} className="h-9" />
 
         <Group gap={0} justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">

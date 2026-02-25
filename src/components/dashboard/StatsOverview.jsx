@@ -6,6 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { Skeleton } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
+import { useTranslation } from "react-i18next";
 import useOverview from "../../hooks/stats/useOverview";
 import useWeeklySummary from "../../hooks/stats/useWeeklySummary";
 import useBestStreak from "../../hooks/stats/useBestStreak";
@@ -23,6 +24,7 @@ function StatCard({ icon, label, value }) {
 }
 
 export default function StatsOverview() {
+  const { t } = useTranslation();
   const { data: overview, isLoading: overviewLoading } = useOverview();
   const { data: weekly, isLoading: weeklyLoading } = useWeeklySummary();
   const { data: bestStreak, isLoading: bestStreakLoading } = useBestStreak();
@@ -42,45 +44,46 @@ export default function StatsOverview() {
     );
   }
 
+  const checkInsLabel = t("dashboard.checkIns");
   const chartData =
     weekly?.dailyCheckIns?.map((entry) => ({
       day: entry.day,
-      "Check-ins": entry.count,
+      [checkInsLabel]: entry.count,
     })) ?? [];
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-2xl font-semibold">Overview</h2>
+      <h2 className="text-2xl font-semibold">{t("dashboard.overview")}</h2>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={<IconChecks size={22} />}
-          label="Total check-ins"
+          label={t("dashboard.totalCheckIns")}
           value={overview?.totalCheckIns ?? 0}
         />
         <StatCard
           icon={<IconFlame size={22} />}
-          label="Active streaks"
+          label={t("dashboard.activeStreaks")}
           value={overview?.activeStreaks ?? 0}
         />
         <StatCard
           icon={<IconTrendingUp size={22} />}
-          label="Best streak"
-          value={`${bestStreak?.days ?? 0} days`}
+          label={t("dashboard.bestStreak")}
+          value={`${bestStreak?.days ?? 0} ${t("dashboard.days")}`}
         />
         <StatCard
           icon={<IconCalendarCheck size={22} />}
-          label="Completed today"
+          label={t("dashboard.completedToday")}
           value={`${weekly?.completeToday ?? 0} / ${weekly?.totalHabits ?? 0}`}
         />
       </div>
       {chartData.length > 0 && (
         <div className="border border-gray-100 rounded-xl p-4 sm:p-6">
-          <h3 className="text-base font-semibold text-gray-700 mb-4">This week</h3>
+          <h3 className="text-base font-semibold text-gray-700 mb-4">{t("dashboard.thisWeek")}</h3>
           <BarChart
             h={200}
             data={chartData}
             dataKey="day"
-            series={[{ name: "Check-ins", color: "blue.6" }]}
+            series={[{ name: checkInsLabel, color: "blue.6" }]}
             tickLine="y"
           />
         </div>

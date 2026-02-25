@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Section from "./HomeSection";
 import stepsImage from "../../assets/how-it-works.png";
 import SectionHeader from "./SectionHeader";
@@ -17,28 +18,30 @@ function Step({ step, name, description, ...props }) {
 }
 
 export default function HowHabitWorks() {
+  const { t } = useTranslation();
+
   return (
     <Section image={stepsImage}>
       <SectionHeader
-        preTitle="Simple"
-        title="How our habit tracker works"
-        description="Tracking habits is easy and intuitive. Follow three simple steps to personal growth."
+        preTitle={t("home.howItWorks.preTitle")}
+        title={t("home.howItWorks.title")}
+        description={t("home.howItWorks.description")}
       />
       <div className="w-full flex flex-col sm:flex-row gap-8 sm:gap-6">
         <Step
           step={1}
-          name="Create habit"
-          description="Define your goals and select habits you want to build or break."
+          name={t("home.howItWorks.step1.name")}
+          description={t("home.howItWorks.step1.description")}
         />
         <Step
           step={2}
-          name="Track progress"
-          description="Log daily check-ins and monitor your consistency with real-time tracking."
+          name={t("home.howItWorks.step2.name")}
+          description={t("home.howItWorks.step2.description")}
         />
         <Step
           step={3}
-          name="Analyze results"
-          description="Review your stats, celebrate streaks, and understand your personal growth journey."
+          name={t("home.howItWorks.step3.name")}
+          description={t("home.howItWorks.step3.description")}
         />
       </div>
     </Section>

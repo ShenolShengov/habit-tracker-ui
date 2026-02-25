@@ -4,6 +4,7 @@ import {
   IconTrophy,
   IconCalendar,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../../store/authContext";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
@@ -35,6 +36,7 @@ function Stat({ name, value, Icon, color }) {
 export default function HabitStats() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { t, i18n } = useTranslation();
 
   const fetchHabitStats = async () => {
     const res = await api.get(endpoints.habits.stats(id));
@@ -46,8 +48,9 @@ export default function HabitStats() {
     queryFn: fetchHabitStats,
   });
 
+  const locale = i18n.language?.startsWith("bg") ? "bg-BG" : "en-US";
   const formattedCreatedOn = new Date(stats?.createdAt).toLocaleDateString(
-    "en-US",
+    locale,
     {
       month: "short",
       day: "numeric",
@@ -58,7 +61,7 @@ export default function HabitStats() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-xl sm:text-2xl font-semibold">Overall stats</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold">{t("habits.details.overallStats")}</h2>
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {isLoading ? (
           <>
@@ -70,25 +73,25 @@ export default function HabitStats() {
         ) : (
           <>
             <Stat
-              name="Total check-ins"
+              name={t("habits.details.totalCheckIns")}
               value={stats.totalCheckIns}
               Icon={IconChecks}
               color="green"
             />
             <Stat
-              name="Current streak"
-              value={`${stats.streaks.currentDays} Day/s`}
+              name={t("habits.details.currentStreak")}
+              value={`${stats.streaks.currentDays} ${t("habits.details.days")}`}
               Icon={IconFlame}
               color="orange"
             />
             <Stat
-              name="Best streak"
-              value={`${stats.streaks.best.days} Day/s`}
+              name={t("habits.details.bestStreak")}
+              value={`${stats.streaks.best.days} ${t("habits.details.days")}`}
               Icon={IconTrophy}
               color="yellow"
             />
             <Stat
-              name="Created on"
+              name={t("habits.details.createdOn")}
               value={formattedCreatedOn}
               Icon={IconCalendar}
               color="blue"

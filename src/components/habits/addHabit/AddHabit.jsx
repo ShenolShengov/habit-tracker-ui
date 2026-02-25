@@ -3,12 +3,15 @@ import { zod4Resolver } from "mantine-form-zod-resolver";
 
 import { useForm } from "@mantine/form";
 import { useNavigate, useParams } from "react-router";
+import { useTranslation } from "react-i18next";
 import DashboardSection from "../../ui/DashboardSection";
-import habitSchema from "../../../schemas/habit.schema";
+import getHabitSchema from "../../../schemas/habit.schema";
 import useCreateHabit from "../../../hooks/habits/useCreateHabit";
 import useUpdateHabit from "../../../hooks/habits/useUpdateHabit";
 import useHabit from "../../../hooks/habits/useHabit";
 import { notifications } from "@mantine/notifications";
+import usePresetHabits from "./usePresetHabits";
+import PresetHabitCard from "./PresetHabitCard";
 
 const inputClasses =
   "border border-gray-200 border-solid rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm";
@@ -17,13 +20,16 @@ export default function AddHabit() {
   const { id } = useParams();
   const isEditing = !!id;
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const presetHabits = usePresetHabits();
+
   const form = useForm({
     initialValues: {
       name: "",
       description: "",
     },
     validateInputOnChange: true,
-    validate: zod4Resolver(habitSchema),
+    validate: zod4Resolver(getHabitSchema(t)),
   });
 
   const { errors } = form;
@@ -53,15 +59,15 @@ export default function AddHabit() {
       if (isEditing) {
         await editHabitMutation({ id, initialData, data });
         notifications.show({
-          title: "Habit updated",
-          message: "Your changes have been saved",
+          title: t("habits.edit.notificationTitle"),
+          message: t("habits.edit.notificationMessage"),
           color: "green",
         });
       } else {
         await addHabitMutation(data);
         notifications.show({
-          title: "Habit created",
-          message: "Start tracking your new habit today!",
+          title: t("habits.create.notificationTitle"),
+          message: t("habits.create.notificationMessage"),
           color: "green",
         });
       }
@@ -79,40 +85,63 @@ export default function AddHabit() {
     <DashboardSection className="gap-8">
       <div className="flex flex-col pb-4 border-b gap-3 border-gray-200">
         <h1 className="text-2xl sm:text-3xl font-semibold">
-          {isEditing ? "Edit habit" : "Create new habit"}
+          {isEditing ? t("habits.edit.title") : t("habits.create.title")}
         </h1>
         {!isEditing && (
           <p className="text-sm text-gray-400">
-            Define your new habit to start tracking your progress.
+            {t("habits.create.description")}
           </p>
         )}
       </div>
+      {!isEditing && (
+        <div className="flex flex-col gap-3">
+          <p className="text-sm font-medium text-gray-600">
+            {t("habits.create.quickStart")}
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {presetHabits.map((habit) => (
+              <PresetHabitCard
+                key={habit.name}
+                name={habit.name}
+                description={habit.description}
+                onClick={() => {
+                  form.setValues({
+                    name: habit.name,
+                    description: habit.description,
+                  });
+                  form.setTouched({ name: true, description: true });
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       <form
         className="flex flex-col gap-5 max-w-lg"
         onSubmit={form.onSubmit(handleAction)}
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-sm font-medium text-gray-700">
-            Habit Name <span className="text-red-400 text-xs">*</span>
+            {t("habits.create.nameLabel")} <span className="text-red-400 text-xs">{t("common.required")}</span>
           </label>
           <input
             key={form.key("name")}
             {...form.getInputProps("name")}
             className={inputClasses}
-            placeholder="e.g., Drink 8 glasses of water"
+            placeholder={t("habits.create.namePlaceholder")}
             type="text"
           />
           {errors.name && <Input.Error size="sm">{errors.name}</Input.Error>}
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="description" className="text-sm font-medium text-gray-700">
-            Description
+            {t("habits.create.descriptionLabel")}
           </label>
           <textarea
             key={form.key("description")}
             {...form.getInputProps("description")}
             className={inputClasses}
-            placeholder="Briefly describe your habit and why it's important"
+            placeholder={t("habits.create.descriptionPlaceholder")}
             rows={4}
             type="text"
           />
@@ -127,7 +156,7 @@ export default function AddHabit() {
             size="md"
             radius="md"
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             type="submit"
@@ -137,10 +166,10 @@ export default function AddHabit() {
             radius="md"
           >
             {form.submitting
-              ? "Saving..."
+              ? t("common.saving")
               : isEditing
-              ? "Save changes"
-              : "Create habit"}
+              ? t("common.saveChanges")
+              : t("habits.create.createButton")}
           </Button>
         </div>
       </form>

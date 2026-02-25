@@ -3,6 +3,7 @@ import {
   IconCheck,
   IconDeviceDesktopAnalytics,
 } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import Section from "./HomeSection";
 import SectionHeader from "./SectionHeader";
 import { Button } from "@mantine/core";
@@ -15,40 +16,40 @@ function Feature({ title, description, Icon }) {
         <Icon size={32} stroke={1.5} className="text-blue-600" />
       </div>
       <h3 className="font-semibold font-outfit text-lg sm:text-xl">{title}</h3>
-      <p className="text-center text-sm text-gray-500">
-        {description}
-      </p>
+      <p className="text-center text-sm text-gray-500">{description}</p>
     </div>
   );
 }
 
 export default function Features() {
+  const { t } = useTranslation();
+
   return (
     <Section>
       <SectionHeader
-        preTitle="Powerful"
-        title="Features designed for your success"
-        description="Our comprehensive toolkit helps you build and maintain meaningful habits."
+        preTitle={t("home.features.preTitle")}
+        title={t("home.features.title")}
+        description={t("home.features.description")}
       />
       <div className="w-full flex flex-col sm:flex-row gap-4 sm:gap-6">
         <Feature
-          title="Habit creation"
-          description="Customize and track personal and professional habits with precision."
+          title={t("home.features.habitCreation.title")}
+          description={t("home.features.habitCreation.description")}
           Icon={IconCalendarPlus}
         />
         <Feature
-          title="Daily check-ins"
-          description="Record your progress and stay accountable every single day."
+          title={t("home.features.dailyCheckIns.title")}
+          description={t("home.features.dailyCheckIns.description")}
           Icon={IconCheck}
         />
         <Feature
-          title="Advanced stats"
-          description="Gain insights into your performance with detailed analytics and visualizations."
+          title={t("home.features.advancedStats.title")}
+          description={t("home.features.advancedStats.description")}
           Icon={IconDeviceDesktopAnalytics}
         />
       </div>
       <Button component={Link} to="/register" size="lg" variant="default" radius="md">
-        Get started for free
+        {t("home.features.getStartedFree")}
       </Button>
     </Section>
   );

@@ -7,20 +7,22 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 import useDeleteHabit from "../../../hooks/habits/useDeleteHabit";
 import useCheckIn from "../../../hooks/checkIn/useCheckIn";
 import { notifications } from "@mantine/notifications";
 
 function ActionButtons({ id }) {
+  const { t } = useTranslation();
   const { mutateAsync: deleteHabitMutation, isPending: isDeleteLoading } =
     useDeleteHabit();
 
   const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete this habit?")) {
+    if (confirm(t("habits.summary.deleteConfirm"))) {
       await deleteHabitMutation(id);
       notifications.show({
-        title: "Habit deleted",
-        message: "The habit has been removed",
+        title: t("habits.summary.deleteNotificationTitle"),
+        message: t("habits.summary.deleteNotificationMessage"),
         color: "red",
       });
     }
@@ -33,7 +35,7 @@ function ActionButtons({ id }) {
         className="grow basis-0 min-w-[80px] border py-2 rounded-lg border-gray-200 flex items-center justify-center gap-1.5 no-underline text-inherit text-sm hover:bg-gray-50 transition-all duration-200"
       >
         <IconEdit size={15} stroke={1.5} />
-        <span>Edit</span>
+        <span>{t("common.edit")}</span>
       </Link>
       <button
         onClick={handleDelete}
@@ -41,34 +43,35 @@ function ActionButtons({ id }) {
         className="grow basis-0 min-w-[80px] cursor-pointer bg-red-500 hover:bg-red-600 transition-all duration-200 text-white py-2 rounded-lg flex items-center justify-center gap-1.5 text-sm border-none"
       >
         <IconTrash size={15} stroke={1.5} />
-        <span className="font-medium">Delete</span>
+        <span className="font-medium">{t("common.delete")}</span>
       </button>
       <Link
         to={`/habits/details/${id}`}
         className="grow basis-0 min-w-[80px] border py-2 rounded-lg border-gray-200 flex items-center justify-center gap-1.5 no-underline text-inherit text-sm hover:bg-gray-50 transition-all duration-200"
       >
         <IconEye size={15} stroke={1.5} />
-        <span>Details</span>
+        <span>{t("common.details")}</span>
       </Link>
     </div>
   );
 }
 
 function CheckInAction({ checkedInToday, id }) {
+  const { t } = useTranslation();
   const { mutateAsync: checkIn } = useCheckIn();
 
   const handleCheckIn = async () => {
     try {
       await checkIn(id);
       notifications.show({
-        title: "Checked in",
-        message: "Great job, keep it up!",
+        title: t("habits.summary.checkInNotificationTitle"),
+        message: t("habits.summary.checkInNotificationMessage"),
         color: "green",
       });
     } catch {
       notifications.show({
-        title: "Check-in failed",
-        message: "Something went wrong. Please try again later.",
+        title: t("habits.summary.checkInFailedTitle"),
+        message: t("habits.summary.checkInFailedMessage"),
         color: "red",
       });
     }
@@ -82,7 +85,7 @@ function CheckInAction({ checkedInToday, id }) {
           className="grow py-2.5 text-sm bg-gray-50 text-gray-400 rounded-lg flex items-center justify-center gap-2 border-none"
         >
           <IconCircleDashedCheck size={18} />
-          Checked in today
+          {t("habits.summary.checkedInToday")}
         </button>
       ) : (
         <button
@@ -90,7 +93,7 @@ function CheckInAction({ checkedInToday, id }) {
           className="grow py-2.5 text-sm font-medium cursor-pointer active:scale-[0.98] transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 border-none"
         >
           <IconCircleDashedPlus size={18} />
-          Mark today as completed
+          {t("habits.summary.markCompleted")}
         </button>
       )}
     </div>

@@ -13,16 +13,19 @@ import { zod4Resolver } from "mantine-form-zod-resolver";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../store/authContext";
-
-const schema = z.object({
-  email: z.email({ error: "Invalid email" }),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-});
 
 export default function Register() {
   const { register } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const schema = z.object({
+    email: z.email({ error: t("validation.invalidEmail") }),
+    password: z.string().min(6, t("validation.passwordMinRegister")),
+  });
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -38,7 +41,7 @@ export default function Register() {
       navigate("/dashboard");
     } catch (e) {
       console.error(e);
-      form.setErrors({ email: "Email is already taken" });
+      form.setErrors({ email: t("auth.register.emailTaken") });
     }
   };
 
@@ -47,27 +50,27 @@ export default function Register() {
       size={420}
       className="flex grow justify-center items-stretch flex-col gap-4"
     >
-      <Title className="self-center font-outfit!" fw={600}>Create your account</Title>
+      <Title className="self-center font-outfit!" fw={600}>{t("auth.register.title")}</Title>
 
       <Text c="dimmed" size="sm" className="self-center">
-        Already have an account?{" "}
+        {t("auth.register.hasAccount")}{" "}
         <Anchor component={Link} to="/login">
-          Log in
+          {t("auth.register.logIn")}
         </Anchor>
       </Text>
 
       <Paper shadow="xs" p={28} className="mt-2!" radius="lg">
         <form onSubmit={form.onSubmit(handleRegister)} className="flex flex-col gap-4">
           <TextInput
-            label="Email"
-            placeholder="you@example.com"
+            label={t("auth.register.email")}
+            placeholder={t("auth.register.emailPlaceholder")}
             radius="md"
             key={form.key("email")}
             {...form.getInputProps("email")}
           />
           <PasswordInput
-            label="Password"
-            placeholder="Your password"
+            label={t("auth.register.password")}
+            placeholder={t("auth.register.passwordPlaceholder")}
             radius="md"
             key={form.key("password")}
             {...form.getInputProps("password")}
@@ -79,7 +82,7 @@ export default function Register() {
             mt="xs"
             radius="md"
           >
-            {form.submitting ? "Creating account..." : "Sign up"}
+            {form.submitting ? t("auth.register.creatingAccount") : t("auth.register.signUp")}
           </Button>
           {form.errors.root && (
             <InputError size="md">

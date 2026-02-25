@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Checkbox, Pagination, Table } from "@mantine/core";
 import { IconUsers } from "@tabler/icons-react";
+import { useTranslation } from "react-i18next";
 import DashboardSection from "../ui/DashboardSection";
 import AppLoader from "../loader/AppLoader";
 import useUsers from "../../hooks/admin/useUsers";
@@ -10,6 +11,7 @@ const PAGE_SIZE = 20;
 export default function AdminUsers() {
   const [page, setPage] = useState(0);
   const [includeDeleted, setIncludeDeleted] = useState(false);
+  const { t } = useTranslation();
   const { data, isLoading, error } = useUsers({ includeDeleted, page, size: PAGE_SIZE });
 
   if (isLoading) {
@@ -19,8 +21,8 @@ export default function AdminUsers() {
   if (error) {
     return (
       <DashboardSection className="gap-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold">User Management</h1>
-        <p className="text-red-500 text-sm">Access denied. You do not have permission to view this page.</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold">{t("admin.title")}</h1>
+        <p className="text-red-500 text-sm">{t("admin.accessDenied")}</p>
       </DashboardSection>
     );
   }
@@ -36,16 +38,16 @@ export default function AdminUsers() {
             <IconUsers size={22} />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-semibold">User Management</h1>
+            <h1 className="text-2xl sm:text-3xl font-semibold">{t("admin.title")}</h1>
             <p className="text-sm text-gray-400 mt-0.5">
-              {data?.page?.totalElements ?? users.length} total users
+              {t("admin.totalUsers", { count: data?.page?.totalElements ?? users.length })}
             </p>
           </div>
         </div>
       </div>
 
       <Checkbox
-        label="Include deleted users"
+        label={t("admin.includeDeleted")}
         checked={includeDeleted}
         onChange={(e) => {
           setIncludeDeleted(e.currentTarget.checked);
@@ -58,12 +60,12 @@ export default function AdminUsers() {
         <Table striped highlightOnHover>
           <Table.Thead>
             <Table.Tr>
-              <Table.Th>Email</Table.Th>
-              <Table.Th>First Name</Table.Th>
-              <Table.Th>Last Name</Table.Th>
-              <Table.Th>Age</Table.Th>
-              <Table.Th>Time Zone</Table.Th>
-              <Table.Th>Status</Table.Th>
+              <Table.Th>{t("admin.email")}</Table.Th>
+              <Table.Th>{t("admin.firstName")}</Table.Th>
+              <Table.Th>{t("admin.lastName")}</Table.Th>
+              <Table.Th>{t("admin.age")}</Table.Th>
+              <Table.Th>{t("admin.timeZone")}</Table.Th>
+              <Table.Th>{t("admin.status")}</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
@@ -98,7 +100,7 @@ export default function AdminUsers() {
               <span>
                 {[user.firstName, user.lastName].filter(Boolean).join(" ") || "-"}
               </span>
-              <span>{user.age ? `Age ${user.age}` : ""}</span>
+              <span>{user.age ? t("admin.ageValue", { age: user.age }) : ""}</span>
               <span className="col-span-2 text-xs text-gray-400">{user.timeZone ?? "-"}</span>
             </div>
           </div>
@@ -106,7 +108,7 @@ export default function AdminUsers() {
       </div>
 
       {users.length === 0 && (
-        <p className="text-center text-gray-400 py-8 text-sm">No users found.</p>
+        <p className="text-center text-gray-400 py-8 text-sm">{t("admin.noUsers")}</p>
       )}
 
       {totalPages > 1 && (
@@ -125,6 +127,7 @@ export default function AdminUsers() {
 }
 
 function StatusBadge({ deletedAt }) {
+  const { t } = useTranslation();
   return (
     <span
       className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
@@ -133,7 +136,7 @@ function StatusBadge({ deletedAt }) {
           : "bg-green-50 text-green-600"
       }`}
     >
-      {deletedAt ? "Deleted" : "Active"}
+      {deletedAt ? t("admin.deleted") : t("admin.active")}
     </span>
   );
 }

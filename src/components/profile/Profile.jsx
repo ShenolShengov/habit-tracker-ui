@@ -3,9 +3,10 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import DashboardSection from "../ui/DashboardSection";
 import AppLoader from "../loader/AppLoader";
-import profileSchema from "../../schemas/profile.schema";
+import getProfileSchema from "../../schemas/profile.schema";
 import useProfile from "../../hooks/user/useProfile";
 import useUpdateProfile from "../../hooks/user/useUpdateProfile";
 import useDeleteAccount from "../../hooks/user/useDeleteAccount";
@@ -18,6 +19,7 @@ const inputClasses =
 export default function Profile() {
   const navigate = useNavigate();
   const { logout, refresh } = useAuth();
+  const { t } = useTranslation();
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] =
     useDisclosure(false);
 
@@ -32,7 +34,7 @@ export default function Profile() {
       timeZone: "",
     },
     validateInputOnChange: true,
-    validate: zod4Resolver(profileSchema),
+    validate: zod4Resolver(getProfileSchema(t)),
   });
 
   if (profile && !form.initialized) {
@@ -69,12 +71,12 @@ export default function Profile() {
       await refresh();
       form.resetTouched();
       notifications.show({
-        title: "Profile updated",
-        message: "Your changes have been saved",
+        title: t("profile.updateNotificationTitle"),
+        message: t("profile.updateNotificationMessage"),
         color: "green",
       });
     } catch (e) {
-      const msg = e.response?.data?.message ?? "Update failed";
+      const msg = e.response?.data?.message ?? t("profile.updateFailed");
       const firstTouched = form.getTouched();
       const errorField =
         Object.keys(firstTouched).find((key) => firstTouched[key]) ?? "email";
@@ -86,8 +88,8 @@ export default function Profile() {
     try {
       await deleteAccount();
       notifications.show({
-        title: "Account deleted",
-        message: "Your account has been permanently removed",
+        title: t("profile.deleteNotificationTitle"),
+        message: t("profile.deleteNotificationMessage"),
         color: "red",
       });
       await logout();
@@ -106,8 +108,8 @@ export default function Profile() {
   return (
     <DashboardSection className="gap-8">
       <div className="flex flex-col pb-4 border-b gap-3 border-gray-200">
-        <h1 className="text-2xl sm:text-3xl font-semibold">Profile</h1>
-        <p className="text-sm text-gray-400">Manage your account settings</p>
+        <h1 className="text-2xl sm:text-3xl font-semibold">{t("profile.title")}</h1>
+        <p className="text-sm text-gray-400">{t("profile.description")}</p>
       </div>
 
       <form
@@ -116,7 +118,7 @@ export default function Profile() {
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className="text-sm font-medium text-gray-700">
-            Email <span className="text-red-400 text-xs">*</span>
+            {t("profile.email")} <span className="text-red-400 text-xs">{t("common.required")}</span>
           </label>
           <input
             key={form.key("email")}
@@ -130,7 +132,7 @@ export default function Profile() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="firstName" className="text-sm font-medium text-gray-700">
-              First Name
+              {t("profile.firstName")}
             </label>
             <input
               key={form.key("firstName")}
@@ -145,7 +147,7 @@ export default function Profile() {
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="lastName" className="text-sm font-medium text-gray-700">
-              Last Name
+              {t("profile.lastName")}
             </label>
             <input
               key={form.key("lastName")}
@@ -162,7 +164,7 @@ export default function Profile() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="age" className="text-sm font-medium text-gray-700">
-              Age
+              {t("profile.age")}
             </label>
             <input
               key={form.key("age")}
@@ -177,7 +179,7 @@ export default function Profile() {
 
           <div className="flex flex-col gap-1.5">
             <label htmlFor="timeZone" className="text-sm font-medium text-gray-700">
-              Time Zone <span className="text-red-400 text-xs">*</span>
+              {t("profile.timeZone")} <span className="text-red-400 text-xs">{t("common.required")}</span>
             </label>
             <input
               key={form.key("timeZone")}
@@ -199,15 +201,15 @@ export default function Profile() {
             size="md"
             radius="md"
           >
-            {form.submitting ? "Saving..." : "Save changes"}
+            {form.submitting ? t("common.saving") : t("common.saveChanges")}
           </Button>
         </div>
       </form>
 
       <div className="mt-6 pt-8 border-t border-gray-200 max-w-lg">
-        <h2 className="text-lg font-semibold text-red-600">Danger Zone</h2>
+        <h2 className="text-lg font-semibold text-red-600">{t("profile.dangerZone")}</h2>
         <p className="text-sm text-gray-400 mt-2">
-          Once you delete your account, there is no going back.
+          {t("profile.dangerZoneDescription")}
         </p>
         <Button
           onClick={openDeleteModal}
@@ -217,24 +219,23 @@ export default function Profile() {
           radius="md"
           className="mt-4"
         >
-          Delete Account
+          {t("profile.deleteAccount")}
         </Button>
       </div>
 
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title="Delete Account"
+        title={t("profile.deleteModalTitle")}
         centered
         radius="lg"
       >
         <p className="text-sm text-gray-600">
-          Are you sure you want to delete your account? This action cannot be
-          undone.
+          {t("profile.deleteModalDescription")}
         </p>
         <div className="flex justify-end gap-3 mt-6">
           <Button variant="default" radius="md" onClick={closeDeleteModal}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             color="red"
@@ -242,7 +243,7 @@ export default function Profile() {
             onClick={handleDeleteAccount}
             loading={isDeleting}
           >
-            Delete
+            {t("common.delete")}
           </Button>
         </div>
       </Modal>

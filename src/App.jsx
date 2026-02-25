@@ -15,6 +15,8 @@ import Profile from "./components/profile/Profile";
 import AdminUsers from "./components/admin/AdminUsers";
 import "./config/dayjsSetup";
 import NotFound from "./components/notFound/NotFound";
+import QA from "./components/qa/QA";
+import Help from "./components/help/Help";
 
 export default function App() {
   return (
@@ -23,6 +25,7 @@ export default function App() {
         <Route element={<GuestGuard />}>
           <Route element={<GuestLayout />}>
             <Route index element={<Home />} />
+            <Route path="/qa" element={<QA />} />
           </Route>
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
@@ -36,6 +39,7 @@ export default function App() {
             <Route path="/habits/edit/:id" element={<AddHabit />} />
             <Route path="/habits/details/:id" element={<HabitDetails />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/help" element={<Help />} />
             <Route element={<AdminGuard />}>
               <Route path="/admin" element={<AdminUsers />} />
             </Route>

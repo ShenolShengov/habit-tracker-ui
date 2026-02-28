@@ -49,7 +49,7 @@ On Apple Silicon, if the backend fails to start, add `platform: linux/arm64` to 
 - `GuestGuard` — wraps public routes (`/`, `/login`, `/register`)
 - `AuthGuard` — wraps protected routes (`/dashboard`, `/habits/create`, `/habits/edit/:id`, `/habits/details/:id`)
 
-**Data fetching**: TanStack Query hooks live in `src/hooks/`. Services in `src/service/` call the axios instance from `src/api/api.js`. All API endpoints are centralized in `src/api/endpoints.js` (base URL: `http://localhost:8080/api`).
+**Data fetching**: TanStack Query hooks live in `src/hooks/`. Services in `src/service/` call the axios instance from `src/api/api.js`. All API endpoints are centralized in `src/api/endpoints.js` (base URL: `/api`). In development, Vite proxies `/api` to `localhost:8080`. In production on Vercel, `vercel.json` rewrites `/api/*` to the Render backend.
 
 **UI**: Mantine v8 for components/forms, Tailwind CSS v4 for utility classes (via `@tailwindcss/vite` plugin), `@tabler/icons-react` for icons, Recharts/`@mantine/charts` for data visualization.
 

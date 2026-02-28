@@ -6,7 +6,7 @@ import {
   IconFlame,
   IconTrash,
 } from "@tabler/icons-react";
-import { Button } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import useDeleteHabit from "../../../hooks/habits/useDeleteHabit";
@@ -38,18 +38,18 @@ function ActionButtons({ id }) {
         <IconEdit size={15} stroke={1.5} />
         <span>{t("common.edit")}</span>
       </Link>
-      <Button
+      <button
         onClick={handleDelete}
-        loading={isDeleteLoading}
-        color="red"
-        variant="filled"
-        radius="md"
-        size="compact-md"
-        leftSection={<IconTrash size={15} stroke={1.5} />}
-        className="grow basis-0 min-w-[80px]"
+        disabled={isDeleteLoading}
+        className="grow basis-0 min-w-[80px] cursor-pointer bg-red-500 hover:bg-red-600 transition-all duration-200 text-white py-2 rounded-lg flex items-center justify-center gap-1.5 text-sm border-none disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {t("common.delete")}
-      </Button>
+        {isDeleteLoading ? (
+          <Loader size={15} color="white" />
+        ) : (
+          <IconTrash size={15} stroke={1.5} />
+        )}
+        <span className="font-medium">{t("common.delete")}</span>
+      </button>
       <Link
         to={`/habits/details/${id}`}
         className="grow basis-0 min-w-[80px] border py-2 rounded-lg border-gray-200 flex items-center justify-center gap-1.5 no-underline text-inherit text-sm hover:bg-gray-50 transition-all duration-200"
@@ -85,28 +85,26 @@ function CheckInAction({ checkedInToday, id }) {
   return (
     <div className="mt-1 flex">
       {checkedInToday ? (
-        <Button
+        <button
           disabled
-          variant="default"
-          radius="md"
-          size="compact-md"
-          leftSection={<IconCircleDashedCheck size={18} />}
-          className="grow"
+          className="grow py-2.5 text-sm bg-gray-50 text-gray-400 rounded-lg flex items-center justify-center gap-2 border-none"
         >
+          <IconCircleDashedCheck size={18} />
           {t("habits.summary.checkedInToday")}
-        </Button>
+        </button>
       ) : (
-        <Button
+        <button
           onClick={handleCheckIn}
-          loading={isCheckingIn}
-          variant="filled"
-          radius="md"
-          size="compact-md"
-          leftSection={<IconCircleDashedPlus size={18} />}
-          className="grow"
+          disabled={isCheckingIn}
+          className="grow py-2.5 text-sm font-medium cursor-pointer active:scale-[0.98] transition-all duration-200 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2 border-none disabled:opacity-60 disabled:cursor-not-allowed"
         >
+          {isCheckingIn ? (
+            <Loader size={18} color="white" />
+          ) : (
+            <IconCircleDashedPlus size={18} />
+          )}
           {t("habits.summary.markCompleted")}
-        </Button>
+        </button>
       )}
     </div>
   );

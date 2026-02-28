@@ -1,4 +1,4 @@
-import { Button, Input } from "@mantine/core";
+import { Button, Input, Loader } from "@mantine/core";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 
 import { useForm } from "@mantine/form";
@@ -34,7 +34,7 @@ export default function AddHabit() {
 
   const { errors } = form;
 
-  const { data: initialData, error } = useHabit(id, {
+  const { data: initialData, error, isLoading: isHabitLoading } = useHabit(id, {
     enabled: isEditing,
     retry: false,
   });
@@ -123,8 +123,9 @@ export default function AddHabit() {
         onSubmit={form.onSubmit(handleAction)}
       >
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="name" className="text-sm font-medium text-gray-700">
+          <label htmlFor="name" className="text-sm font-medium text-gray-700 flex items-center gap-2">
             {t("habits.create.nameLabel")} <span className="text-red-400 text-xs">{t("common.required")}</span>
+            {isEditing && isHabitLoading && <Loader size={14} />}
           </label>
           <input
             key={form.key("name")}
@@ -136,8 +137,9 @@ export default function AddHabit() {
           {errors.name && <Input.Error size="sm">{errors.name}</Input.Error>}
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="description" className="text-sm font-medium text-gray-700">
+          <label htmlFor="description" className="text-sm font-medium text-gray-700 flex items-center gap-2">
             {t("habits.create.descriptionLabel")}
+            {isEditing && isHabitLoading && <Loader size={14} />}
           </label>
           <textarea
             key={form.key("description")}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Input, Modal } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
@@ -47,8 +48,9 @@ export default function Profile() {
     });
   }
 
-  const { mutateAsync: updateProfile, isPending: isUpdating } = useUpdateProfile();
+  const { mutateAsync: updateProfile } = useUpdateProfile();
   const { mutateAsync: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleUpdate = async (data) => {
     try {
@@ -67,6 +69,7 @@ export default function Profile() {
 
       if (Object.keys(payload).length === 0) return;
 
+      setIsUpdating(true);
       await updateProfile(payload);
       try {
         await refresh();
@@ -85,6 +88,8 @@ export default function Profile() {
       const errorField =
         Object.keys(firstTouched).find((key) => firstTouched[key]) ?? "email";
       form.setErrors({ [errorField]: msg });
+    } finally {
+      setIsUpdating(false);
     }
   };
 

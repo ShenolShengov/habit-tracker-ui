@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   IconCircleDashedCheck,
   IconCircleDashedPlus,
@@ -15,17 +16,22 @@ import { notifications } from "@mantine/notifications";
 
 function ActionButtons({ id }) {
   const { t } = useTranslation();
-  const { mutateAsync: deleteHabitMutation, isPending: isDeleteLoading } =
-    useDeleteHabit();
+  const { mutateAsync: deleteHabitMutation } = useDeleteHabit();
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const handleDelete = async () => {
     if (confirm(t("habits.summary.deleteConfirm"))) {
-      await deleteHabitMutation(id);
-      notifications.show({
-        title: t("habits.summary.deleteNotificationTitle"),
-        message: t("habits.summary.deleteNotificationMessage"),
-        color: "red",
-      });
+      setIsDeleteLoading(true);
+      try {
+        await deleteHabitMutation(id);
+        notifications.show({
+          title: t("habits.summary.deleteNotificationTitle"),
+          message: t("habits.summary.deleteNotificationMessage"),
+          color: "red",
+        });
+      } finally {
+        setIsDeleteLoading(false);
+      }
     }
   };
 
@@ -63,9 +69,11 @@ function ActionButtons({ id }) {
 
 function CheckInAction({ checkedInToday, id }) {
   const { t } = useTranslation();
-  const { mutateAsync: checkIn, isPending: isCheckingIn } = useCheckIn();
+  const { mutateAsync: checkIn } = useCheckIn();
+  const [isCheckingIn, setIsCheckingIn] = useState(false);
 
   const handleCheckIn = async () => {
+    setIsCheckingIn(true);
     try {
       await checkIn(id);
       notifications.show({
@@ -79,6 +87,8 @@ function CheckInAction({ checkedInToday, id }) {
         message: t("habits.summary.checkInFailedMessage"),
         color: "red",
       });
+    } finally {
+      setIsCheckingIn(false);
     }
   };
 

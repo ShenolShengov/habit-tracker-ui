@@ -5,7 +5,6 @@ import { useForm } from "@mantine/form";
 import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import DashboardSection from "../../ui/DashboardSection";
-import AppLoader from "../../loader/AppLoader";
 import getHabitSchema from "../../../schemas/habit.schema";
 import useCreateHabit from "../../../hooks/habits/useCreateHabit";
 import useUpdateHabit from "../../../hooks/habits/useUpdateHabit";
@@ -35,7 +34,7 @@ export default function AddHabit() {
 
   const { errors } = form;
 
-  const { data: initialData, error, isLoading: isHabitLoading } = useHabit(id, {
+  const { data: initialData, error } = useHabit(id, {
     enabled: isEditing,
     retry: false,
   });
@@ -49,10 +48,6 @@ export default function AddHabit() {
 
   if (error) {
     navigate("/not-found");
-  }
-
-  if (isEditing && isHabitLoading) {
-    return <AppLoader />;
   }
 
   const { mutateAsync: addHabitMutation, isPending: isCreating } =

@@ -68,7 +68,11 @@ export default function Profile() {
       if (Object.keys(payload).length === 0) return;
 
       await updateProfile(payload);
-      await refresh();
+      try {
+        await refresh();
+      } catch {
+        // refresh may fail if cookie isn't available; profile was still updated
+      }
       form.resetTouched();
       notifications.show({
         title: t("profile.updateNotificationTitle"),

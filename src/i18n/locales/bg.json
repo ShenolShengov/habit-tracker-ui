@@ -17,6 +17,7 @@
   "common.saveChanges": "Запази промените",
   "common.required": "*",
   "common.altLogo": "Тракер на навици",
+  "common.serverWaking": "Сървърът се събужда след неактивност. Това може да отнеме около минута.",
 
   "home.heading.before": "Изгради ",
   "home.heading.gradient": "по-добри навици",

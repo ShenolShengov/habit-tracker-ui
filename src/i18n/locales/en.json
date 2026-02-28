@@ -17,6 +17,7 @@
   "common.saveChanges": "Save changes",
   "common.required": "*",
   "common.altLogo": "Habit Tracker",
+  "common.serverWaking": "The server is waking up after inactivity. This may take up to a minute.",
 
   "home.heading.before": "Build ",
   "home.heading.gradient": "better habits",

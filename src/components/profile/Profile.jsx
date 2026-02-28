@@ -47,7 +47,7 @@ export default function Profile() {
     });
   }
 
-  const { mutateAsync: updateProfile } = useUpdateProfile();
+  const { mutateAsync: updateProfile, isPending: isUpdating } = useUpdateProfile();
   const { mutateAsync: deleteAccount, isPending: isDeleting } = useDeleteAccount();
 
   const handleUpdate = async (data) => {
@@ -197,11 +197,12 @@ export default function Profile() {
           <Button
             type="submit"
             disabled={!form.isValid() || !form.isTouched()}
+            loading={isUpdating}
             variant="filled"
             size="md"
             radius="md"
           >
-            {form.submitting ? t("common.saving") : t("common.saveChanges")}
+            {t("common.saveChanges")}
           </Button>
         </div>
       </form>

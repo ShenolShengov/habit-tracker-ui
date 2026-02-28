@@ -50,9 +50,11 @@ export default function AddHabit() {
     navigate("/not-found");
   }
 
-  const { mutateAsync: addHabitMutation } = useCreateHabit();
+  const { mutateAsync: addHabitMutation, isPending: isCreating } =
+    useCreateHabit();
 
-  const { mutateAsync: editHabitMutation } = useUpdateHabit();
+  const { mutateAsync: editHabitMutation, isPending: isUpdating } =
+    useUpdateHabit();
 
   const handleAction = async (data) => {
     try {
@@ -161,13 +163,12 @@ export default function AddHabit() {
           <Button
             type="submit"
             disabled={!form.isValid() || !form.isTouched()}
+            loading={isCreating || isUpdating}
             variant="filled"
             size="md"
             radius="md"
           >
-            {form.submitting
-              ? t("common.saving")
-              : isEditing
+            {isEditing
               ? t("common.saveChanges")
               : t("habits.create.createButton")}
           </Button>

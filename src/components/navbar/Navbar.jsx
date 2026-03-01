@@ -38,7 +38,7 @@ function MobileNavLink({ Icon, label, path }) {
     <NavLink
       to={path}
       className={({ isActive }) =>
-        `flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl text-xs no-underline transition-all duration-200 ${
+        `flex flex-col items-center gap-0.5 py-2 px-2 rounded-xl text-xs no-underline transition-all duration-200 ${
           isActive
             ? "text-blue-600"
             : "text-gray-400 hover:text-gray-600"
@@ -114,7 +114,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile bottom navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-solid border-gray-100 z-10 flex justify-around items-center px-2 py-1.5">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-solid border-gray-100 z-10 flex justify-around items-center px-1 py-1.5">
         {links.map((link) => (
           <MobileNavLink {...link} key={link.path} />
         ))}
@@ -127,11 +127,14 @@ export default function Navbar() {
         )}
         <button
           onClick={handleLogout}
-          className="flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl text-xs text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none transition-all duration-200"
+          className="flex flex-col items-center gap-0.5 py-2 px-2 rounded-xl text-xs text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none transition-all duration-200"
         >
           <IconLogout size={20} stroke={1.5} />
           <span className="font-medium">{t("nav.logout")}</span>
         </button>
+        <div className="flex flex-col items-center gap-0.5 py-2 px-2">
+          <LanguageSwitcher className="border-none px-0.5 py-0.5 text-sm" />
+        </div>
       </nav>
     </>
   );

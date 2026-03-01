@@ -21,14 +21,14 @@ const colorMap = {
 
 function Stat({ name, value, Icon, color }) {
   return (
-    <div className="flex justify-center items-center p-5 sm:p-6 flex-col gap-3 border border-gray-100 rounded-xl hover:shadow-md transition-all duration-300">
-      <div className={`p-2.5 rounded-xl ${colorMap[color]}`}>
-        <Icon size={24} stroke={1.5} />
+    <div className="flex justify-center items-center p-4 sm:p-6 flex-col gap-2 sm:gap-3 border border-gray-100 rounded-xl hover:shadow-md transition-all duration-300">
+      <div className={`p-2 sm:p-2.5 rounded-xl ${colorMap[color]}`}>
+        <Icon size={22} stroke={1.5} />
       </div>
-      <h3 className="uppercase text-xs text-gray-400 tracking-wider font-medium">
+      <h3 className="uppercase text-[10px] sm:text-xs text-gray-400 tracking-wider font-medium text-center">
         {name}
       </h3>
-      <p className="text-xl sm:text-2xl font-semibold">{value}</p>
+      <p className="text-lg sm:text-2xl font-semibold text-center">{value}</p>
     </div>
   );
 }

@@ -1,9 +1,11 @@
 import { BarChart } from "@mantine/charts";
+import { useMediaQuery } from "@mantine/hooks";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 
 export default function MonthsCheckIns({ checkIns, viewedYear }) {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const checkInsLabel = t("habits.details.checkInsChartLabel");
 
   const yearInfo = () => {
@@ -25,7 +27,7 @@ export default function MonthsCheckIns({ checkIns, viewedYear }) {
       </h2>
       <div className="border border-gray-100 rounded-xl p-4 sm:p-6">
         <BarChart
-          h={300}
+          h={isMobile ? 220 : 300}
           data={yearInfo()}
           dataKey="month"
           series={[{ name: checkInsLabel, color: "blue.6" }]}

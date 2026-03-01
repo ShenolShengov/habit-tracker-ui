@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Calendar } from "@mantine/dates";
+import { useMediaQuery } from "@mantine/hooks";
 import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 
 export default function CheckInsHistory({ checkIns, viewedYear, onYearChange }) {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const [date, setDate] = useState(dayjs().toDate());
 
   const handleDateChange = (newDate) => {
@@ -31,12 +33,12 @@ export default function CheckInsHistory({ checkIns, viewedYear, onYearChange }) 
       <h2 className="text-xl sm:text-2xl font-semibold">{t("habits.details.checkInHistory")}</h2>
       <div className="flex justify-center w-full overflow-x-auto border border-gray-100 rounded-xl p-4 sm:p-6">
         <Calendar
-          size="md"
+          size={isMobile ? "sm" : "md"}
           getDayProps={markCheckins}
           date={date}
           onDateChange={handleDateChange}
           maxDate={dayjs().toDate()}
-          numberOfColumns={2}
+          numberOfColumns={isMobile ? 1 : 2}
           hideOutsideDates
         />
       </div>

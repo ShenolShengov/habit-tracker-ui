@@ -41,7 +41,12 @@ export default function Register() {
       navigate("/dashboard");
     } catch (e) {
       console.error(e);
-      form.setErrors({ email: t("auth.register.emailTaken") });
+      const isNetworkError = !e.response;
+      if (isNetworkError) {
+        form.setErrors({ root: t("auth.register.networkError") });
+      } else {
+        form.setErrors({ email: t("auth.register.emailTaken") });
+      }
     }
   };
 

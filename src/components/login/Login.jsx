@@ -41,7 +41,12 @@ export default function Login() {
       navigate("/dashboard");
     } catch (e) {
       console.error(e);
-      form.setErrors({ root: t("auth.login.invalidCredentials") });
+      const isNetworkError = !e.response;
+      form.setErrors({
+        root: isNetworkError
+          ? t("auth.login.networkError")
+          : t("auth.login.invalidCredentials"),
+      });
     }
   };
 

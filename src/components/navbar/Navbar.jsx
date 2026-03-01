@@ -5,7 +5,7 @@ import {
   IconUser,
   IconShieldCheck,
   IconHelp,
-  IconDotsHorizontal,
+  IconDots,
   IconLanguage,
 } from "@tabler/icons-react";
 import { Center, Drawer, Stack, Tooltip } from "@mantine/core";
@@ -164,7 +164,7 @@ export default function Navbar() {
           onClick={openDrawer}
           className="flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl text-xs text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none transition-all duration-200"
         >
-          <IconDotsHorizontal size={20} stroke={1.5} />
+          <IconDots size={20} stroke={1.5} />
           <span className="font-medium">{t("nav.more")}</span>
         </button>
       </nav>

@@ -4,11 +4,13 @@ import LanguageSwitcher from "../components/ui/LanguageSwitcher";
 
 export default function AuthLayout() {
   return (
-    <Container className="relative justify-center items-center min-h-dvh">
-      <div className="absolute top-4 right-4">
+    <Container className="relative flex-col min-h-dvh">
+      <div className="flex justify-end pt-4 pr-0 sm:absolute sm:top-4 sm:right-4">
         <LanguageSwitcher />
       </div>
-      <Outlet />
+      <div className="flex flex-1 flex-col justify-center items-center">
+        <Outlet />
+      </div>
     </Container>
   );
 }

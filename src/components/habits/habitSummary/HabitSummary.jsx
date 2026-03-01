@@ -71,11 +71,13 @@ function CheckInAction({ checkedInToday, id }) {
   const { t } = useTranslation();
   const { mutateAsync: checkIn } = useCheckIn();
   const [isCheckingIn, setIsCheckingIn] = useState(false);
+  const [optimisticCheckedIn, setOptimisticCheckedIn] = useState(false);
 
   const handleCheckIn = async () => {
     setIsCheckingIn(true);
     try {
       await checkIn(id);
+      setOptimisticCheckedIn(true);
       notifications.show({
         title: t("habits.summary.checkInNotificationTitle"),
         message: t("habits.summary.checkInNotificationMessage"),
@@ -92,9 +94,11 @@ function CheckInAction({ checkedInToday, id }) {
     }
   };
 
+  const isCheckedIn = checkedInToday || optimisticCheckedIn;
+
   return (
     <div className="mt-1 flex">
-      {checkedInToday ? (
+      {isCheckedIn ? (
         <button
           disabled
           className="grow py-2.5 text-sm bg-gray-50 text-gray-400 rounded-lg flex items-center justify-center gap-2 border-none"

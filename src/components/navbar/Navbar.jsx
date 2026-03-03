@@ -90,7 +90,7 @@ export default function Navbar() {
   const { logout, user } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
 
   const primaryLinks = [
@@ -158,10 +158,10 @@ export default function Navbar() {
       {/* Mobile bottom navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-solid border-gray-100 z-10 flex justify-around items-center px-2 py-1.5">
         {primaryLinks.map((link) => (
-          <MobileNavLink {...link} key={link.path} />
+          <MobileNavLink {...link} key={link.path} onClick={closeDrawer} />
         ))}
         <button
-          onClick={openDrawer}
+          onClick={toggleDrawer}
           className="flex flex-col items-center gap-0.5 py-2 px-3 rounded-xl text-xs text-gray-400 hover:text-gray-600 cursor-pointer bg-transparent border-none transition-all duration-200"
         >
           <IconDots size={20} stroke={1.5} />

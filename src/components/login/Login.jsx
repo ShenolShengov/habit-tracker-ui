@@ -52,7 +52,7 @@ export default function Login() {
 
   return (
     <Container
-      size={420}
+      size={520}
       className="flex grow justify-center items-stretch flex-col gap-4"
     >
       <Title className="self-center font-outfit!" fw={600}>{t("auth.login.title")}</Title>

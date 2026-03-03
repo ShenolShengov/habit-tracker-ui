@@ -7,6 +7,7 @@ import {
   IconHelp,
   IconDots,
   IconLanguage,
+  IconX,
 } from "@tabler/icons-react";
 import { Center, Drawer, Stack, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -180,7 +181,12 @@ export default function Navbar() {
         radius="lg"
         styles={{ body: { padding: "16px 12px 24px" } }}
       >
-        <div className="w-10 h-1 rounded-full bg-gray-300 mx-auto mb-4" />
+        <button
+          onClick={closeDrawer}
+          className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 cursor-pointer bg-transparent border-none transition-all duration-200"
+        >
+          <IconX size={18} stroke={1.5} />
+        </button>
 
         <Stack gap={2}>
           <DrawerLink

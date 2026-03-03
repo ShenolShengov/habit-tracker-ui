@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Checkbox, Pagination, Table } from "@mantine/core";
+import { Checkbox, Loader, Pagination, Table } from "@mantine/core";
 import { IconUsers } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import DashboardSection from "../ui/DashboardSection";
-import AppLoader from "../loader/AppLoader";
 import useUsers from "../../hooks/admin/useUsers";
 
 const PAGE_SIZE = 20;
@@ -14,9 +13,8 @@ export default function AdminUsers() {
   const { t } = useTranslation();
   const { data, isLoading, error } = useUsers({ includeDeleted, page, size: PAGE_SIZE });
 
-  if (isLoading) {
-    return <AppLoader />;
-  }
+  const users = data?.content ?? [];
+  const totalPages = data?.page?.totalPages ?? data?.totalPages ?? 1;
 
   if (error) {
     return (
@@ -27,9 +25,6 @@ export default function AdminUsers() {
     );
   }
 
-  const users = data?.content ?? [];
-  const totalPages = data?.page?.totalPages ?? data?.totalPages ?? 1;
-
   return (
     <DashboardSection className="gap-8">
       <div className="flex flex-col pb-4 border-b gap-3 border-gray-200">
@@ -39,9 +34,11 @@ export default function AdminUsers() {
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-semibold">{t("admin.title")}</h1>
-            <p className="text-sm text-gray-400 mt-0.5">
-              {t("admin.totalUsers", { count: data?.page?.totalElements ?? users.length })}
-            </p>
+            {!isLoading && (
+              <p className="text-sm text-gray-400 mt-0.5">
+                {t("admin.totalUsers", { count: data?.page?.totalElements ?? users.length })}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -55,72 +52,80 @@ export default function AdminUsers() {
         }}
       />
 
-      {/* Desktop table */}
-      <div className="hidden sm:block overflow-x-auto border border-gray-100 rounded-xl">
-        <Table striped highlightOnHover>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>{t("admin.email")}</Table.Th>
-              <Table.Th>{t("admin.firstName")}</Table.Th>
-              <Table.Th>{t("admin.lastName")}</Table.Th>
-              <Table.Th>{t("admin.age")}</Table.Th>
-              <Table.Th>{t("admin.timeZone")}</Table.Th>
-              <Table.Th>{t("admin.status")}</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {users?.map((user) => (
-              <Table.Tr key={user.email}>
-                <Table.Td className="font-medium">{user.email}</Table.Td>
-                <Table.Td>{user.firstName ?? "-"}</Table.Td>
-                <Table.Td>{user.lastName ?? "-"}</Table.Td>
-                <Table.Td>{user.age ?? "-"}</Table.Td>
-                <Table.Td>{user.timeZone ?? "-"}</Table.Td>
-                <Table.Td>
-                  <StatusBadge deletedAt={user.deletedAt} />
-                </Table.Td>
-              </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
-      </div>
-
-      {/* Mobile card list */}
-      <div className="sm:hidden flex flex-col gap-3">
-        {users?.map((user) => (
-          <div
-            key={user.email}
-            className="border border-gray-100 rounded-xl p-4 flex flex-col gap-2.5"
-          >
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-sm truncate mr-2">{user.email}</p>
-              <StatusBadge deletedAt={user.deletedAt} />
-            </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-500">
-              <span>
-                {[user.firstName, user.lastName].filter(Boolean).join(" ") || "-"}
-              </span>
-              <span>{user.age ? t("admin.ageValue", { age: user.age }) : ""}</span>
-              <span className="col-span-2 text-xs text-gray-400">{user.timeZone ?? "-"}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {users.length === 0 && (
-        <p className="text-center text-gray-400 py-8 text-sm">{t("admin.noUsers")}</p>
-      )}
-
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-4">
-          <Pagination
-            total={totalPages}
-            value={page + 1}
-            onChange={(p) => setPage(p - 1)}
-            withControls
-            withEdges
-          />
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <Loader size="lg" />
         </div>
+      ) : (
+        <>
+          {/* Desktop table */}
+          <div className="hidden sm:block overflow-x-auto border border-gray-100 rounded-xl">
+            <Table striped highlightOnHover>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>{t("admin.email")}</Table.Th>
+                  <Table.Th>{t("admin.firstName")}</Table.Th>
+                  <Table.Th>{t("admin.lastName")}</Table.Th>
+                  <Table.Th>{t("admin.age")}</Table.Th>
+                  <Table.Th>{t("admin.timeZone")}</Table.Th>
+                  <Table.Th>{t("admin.status")}</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {users?.map((user) => (
+                  <Table.Tr key={user.email}>
+                    <Table.Td className="font-medium">{user.email}</Table.Td>
+                    <Table.Td>{user.firstName ?? "-"}</Table.Td>
+                    <Table.Td>{user.lastName ?? "-"}</Table.Td>
+                    <Table.Td>{user.age ?? "-"}</Table.Td>
+                    <Table.Td>{user.timeZone ?? "-"}</Table.Td>
+                    <Table.Td>
+                      <StatusBadge deletedAt={user.deletedAt} />
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </div>
+
+          {/* Mobile card list */}
+          <div className="sm:hidden flex flex-col gap-3">
+            {users?.map((user) => (
+              <div
+                key={user.email}
+                className="border border-gray-100 rounded-xl p-4 flex flex-col gap-2.5"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="font-medium text-sm truncate mr-2">{user.email}</p>
+                  <StatusBadge deletedAt={user.deletedAt} />
+                </div>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-gray-500">
+                  <span>
+                    {[user.firstName, user.lastName].filter(Boolean).join(" ") || "-"}
+                  </span>
+                  <span>{user.age ? t("admin.ageValue", { age: user.age }) : ""}</span>
+                  <span className="col-span-2 text-xs text-gray-400">{user.timeZone ?? "-"}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {users.length === 0 && (
+            <p className="text-center text-gray-400 py-8 text-sm">{t("admin.noUsers")}</p>
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-4">
+              <Pagination
+                total={totalPages}
+                value={page + 1}
+                onChange={(p) => setPage(p - 1)}
+                withControls
+                withEdges
+              />
+            </div>
+          )}
+        </>
       )}
     </DashboardSection>
   );

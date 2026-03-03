@@ -23,7 +23,7 @@ export default function Login() {
 
   const schema = z.object({
     email: z.email({ error: t("validation.invalidEmail") }),
-    password: z.string().min(8, t("validation.passwordMinLogin")),
+    password: z.string().min(6, t("validation.passwordMinLogin")),
   });
 
   const form = useForm({
@@ -52,12 +52,12 @@ export default function Login() {
 
   return (
     <Container
-      size={520}
+      size={600}
       className="flex grow justify-center items-stretch flex-col gap-4"
     >
-      <Title className="self-center font-outfit!" fw={600}>{t("auth.login.title")}</Title>
+      <Title className="self-center text-center font-outfit!" fw={600}>{t("auth.login.title")}</Title>
 
-      <Text c="dimmed" size="sm" className="self-center">
+      <Text c="dimmed" size="sm" className="self-center text-center">
         {t("auth.login.noAccount")}{" "}
         <Anchor component={Link} to="/register">{t("auth.login.createAccount")}</Anchor>
       </Text>

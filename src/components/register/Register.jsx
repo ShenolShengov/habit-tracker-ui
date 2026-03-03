@@ -52,12 +52,12 @@ export default function Register() {
 
   return (
     <Container
-      size={520}
+      size={600}
       className="flex grow justify-center items-stretch flex-col gap-4"
     >
-      <Title className="self-center font-outfit!" fw={600}>{t("auth.register.title")}</Title>
+      <Title className="self-center text-center font-outfit!" fw={600}>{t("auth.register.title")}</Title>
 
-      <Text c="dimmed" size="sm" className="self-center">
+      <Text c="dimmed" size="sm" className="self-center text-center">
         {t("auth.register.hasAccount")}{" "}
         <Anchor component={Link} to="/login">
           {t("auth.register.logIn")}

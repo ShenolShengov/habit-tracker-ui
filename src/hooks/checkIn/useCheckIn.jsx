@@ -12,6 +12,9 @@ export default function useCheckIn(options) {
       queryClient.invalidateQueries({ queryKey: ["stats-overview"] });
       queryClient.invalidateQueries({ queryKey: ["stats-weekly"] });
       queryClient.invalidateQueries({ queryKey: ["stats-best-streak"] });
+      queryClient.invalidateQueries({ queryKey: ["checkins-calendar"] });
+      queryClient.invalidateQueries({ queryKey: ["checkins-chart"] });
+      queryClient.invalidateQueries({ queryKey: ["habit-stats"] });
     },
     ...options,
   });

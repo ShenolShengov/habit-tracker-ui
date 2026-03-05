@@ -19,7 +19,7 @@
   "common.saveChanges": "Запази промените",
   "common.required": "*",
   "common.altLogo": "Тракер на навици",
-  "common.serverWaking": "Сървърът се събужда след неактивност. Това може да отнеме около минута.",
+  "common.serverWaking": "",
 
   "home.heading.before": "Изгради ",
   "home.heading.gradient": "по-добри навици",
@@ -68,7 +68,7 @@
   "auth.login.signingIn": "Влизане...",
   "auth.login.signIn": "Вход",
   "auth.login.invalidCredentials": "Невалиден имейл или парола",
-  "auth.login.networkError": "Сървърът не е достъпен. Възможно е да се събужда — опитай отново след няколко секунди.",
+  "auth.login.networkError": "Сървърът не е достъпен. Опитай отново след няколко секунди.",
 
   "auth.register.title": "Създай своя акаунт",
   "auth.register.hasAccount": "Вече имаш акаунт?",
@@ -80,7 +80,7 @@
   "auth.register.creatingAccount": "Създаване на акаунт...",
   "auth.register.signUp": "Регистрация",
   "auth.register.emailTaken": "Имейлът вече е зает",
-  "auth.register.networkError": "Сървърът не е достъпен. Възможно е да се събужда — опитай отново след няколко секунди.",
+  "auth.register.networkError": "Сървърът не е достъпен. Опитай отново след няколко секунди.",
 
   "validation.invalidEmail": "Невалиден имейл",
   "validation.passwordMinLogin": "Паролата трябва да е поне 8 символа",

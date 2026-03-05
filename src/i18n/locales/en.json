@@ -19,7 +19,7 @@
   "common.saveChanges": "Save changes",
   "common.required": "*",
   "common.altLogo": "Habit Tracker",
-  "common.serverWaking": "The server is waking up after inactivity. This may take up to a minute.",
+  "common.serverWaking": "",
 
   "home.heading.before": "Build ",
   "home.heading.gradient": "better habits",
@@ -68,7 +68,7 @@
   "auth.login.signingIn": "Signing in...",
   "auth.login.signIn": "Sign in",
   "auth.login.invalidCredentials": "Invalid email or password",
-  "auth.login.networkError": "Unable to reach the server. It may be waking up — please try again in a few seconds.",
+  "auth.login.networkError": "Unable to reach the server. Please try again in a few seconds.",
 
   "auth.register.title": "Create your account",
   "auth.register.hasAccount": "Already have an account?",
@@ -80,7 +80,7 @@
   "auth.register.creatingAccount": "Creating account...",
   "auth.register.signUp": "Sign up",
   "auth.register.emailTaken": "Email is already taken",
-  "auth.register.networkError": "Unable to reach the server. It may be waking up — please try again in a few seconds.",
+  "auth.register.networkError": "Unable to reach the server. Please try again in a few seconds.",
 
   "validation.invalidEmail": "Invalid email",
   "validation.passwordMinLogin": "Password must be at least 8 characters long",
